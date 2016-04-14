@@ -1,5 +1,6 @@
-##This now XRef bold, a little more modestly
+##A Cross Reference Utility for Prolog
 
-It uses Duck World as an example,
-but is not anymore the Duck World tutorial
+see license.txt for license
+see doc.md for usage
+
 
