@@ -81,16 +81,7 @@
 % To allow running from command line compiled code
 % version.
 
-main :-
-   command_line(ARGS),
-   get_files(ARGS, FILES),
-   axrf:xref(FILES, 'xref.txt').
-
-get_files([], []).
-get_files([ARG|ARGS], [FILE|FILES]) :-
-   atom_codes(FILE, ARG),
-   get_files(ARGS, FILES).
-   
+  
 
 :- module(axrf).
 :- export([xref/1, xref/2, xref/3]).

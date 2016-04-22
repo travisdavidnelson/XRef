@@ -1,7 +1,7 @@
 
 ----- Warnings -----
 Dynamic and static definitions for: data:loc/2
-Unused predicate: user:main/0
+Unused predicate: user:dw_main/0
 
 ----- Predicate Use -----
 data:loc/2
@@ -142,6 +142,13 @@ rules:take/1
     builtin:write/1
   called from:  
     rules:do/1
+user:dw_main/0
+  subgoals:
+    user:go/0
+    user:instructions/0
+    builtin:nl/0
+    builtin:write/1
+  no callers
 user:go/0
   subgoals:
     builtin:\=/2
@@ -154,18 +161,11 @@ user:go/0
     builtin:write/1
   called from:  
     user:go/0
-    user:main/0
+    user:dw_main/0
 user:instructions/0
   subgoals:
     builtin:nl/0
     builtin:write/1
   called from:  
     rules:do/1
-    user:main/0
-user:main/0
-  subgoals:
-    user:go/0
-    user:instructions/0
-    builtin:nl/0
-    builtin:write/1
-  no callers
+    user:dw_main/0
