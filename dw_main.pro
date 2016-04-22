@@ -38,7 +38,7 @@
 % is the default module, it does not need to be specified.
 % The following predicates are all in 'user'.
 
-main :-
+dw_main :-
 	write(` Welcome to Duck World `),nl,
 	instructions,
 	write(` Go get an egg `),nl,
