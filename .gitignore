@@ -1,3 +1,4 @@
 *.plm
 *.xpl
-
+.project
+build.properties
