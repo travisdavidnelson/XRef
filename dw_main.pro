@@ -39,9 +39,9 @@
 % The following predicates are all in 'user'.
 
 dw_main :-
-	write(` Welcome to Duck World `),nl,
+	write(' Welcome to Duck World '),nl,
 	instructions,
-	write(` Go get an egg `),nl,
+	write(' Go get an egg '),nl,
 	go.
 
 % Because 'rules' are imported by 'user', this
@@ -50,26 +50,26 @@ dw_main :-
 
 go :- done.
 go :-
-	write($>> $),
+	write('>> '),
 	read(X),
 	X \= quit,
 	do(X),
 	demons,
 	!, go.
-go :- write($ Quitter $), nl.
+go :- write(' Quitter '), nl.
 
 instructions :-
 	nl,
-	write($You start in the house, the ducks and an egg$), nl,
-	write($are in the pen.  You have to get the egg$), nl,
-	write($without losing any ducks.$), nl,
+	write('You start in the house, the ducks and an egg'), nl,
+	write('are in the pen.  You have to get the egg'), nl,
+	write('without losing any ducks.'), nl,
 	nl,
-	write($Enter commands at the prompt as Prolog terms$), nl,
-	write($ending in period:$), nl,
-	write($  goto(X). - where X is a place to go to.$), nl,
-	write($  take(X). - where X is a thing to take.$), nl,
-	write($  chase(X). - chasing ducks sends them to the pen.$), nl,
-	write($  look. - the state of the game.$), nl,
-	write($  help. - this information.$), nl,
-	write($  quit. - exit the game.$), nl,
+	write('Enter commands at the prompt as Prolog terms'), nl,
+	write('ending in period:'), nl,
+	write('  goto(X). - where X is a place to go to.'), nl,
+	write('  take(X). - where X is a thing to take.'), nl,
+	write('  chase(X). - chasing ducks sends them to the pen.'), nl,
+	write('  look. - the state of the game.'), nl,
+	write('  help. - this information.'), nl,
+	write('  quit. - exit the game.'), nl,
 	nl.

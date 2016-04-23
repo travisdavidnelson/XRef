@@ -82,9 +82,33 @@
 % version.
 
   
+% Amzi! modules, ISO standard
+% :- module(axrf).
+% :- export([xref/1, xref/2, xref/3]).
 
-:- module(axrf).
-:- export([xref/1, xref/2, xref/3]).
+:- use_module(library(file_systems)).
+
+% SICStus modules
+:- module(axrf, [
+    xref/1,
+    xref/2,
+    xref/3]).
+
+:- dynamic
+   uses_temp/2,
+   uses/2,
+   import_mod/2,
+   import_pred/2,
+   export_pred/2,
+   dynamic_pred/1,
+   used_by/2,
+   open_module/1,
+   warning/1,
+   discontig_pred/1,
+   last_clause/1,
+   file/2,
+   pred_loc/4.
+
 
 xref(FILES) :-
    xinit,
@@ -104,19 +128,20 @@ xref(FILES, WARNINGS, USES) :-
    get_xlists(WARNINGS, USES).
 
 xinit :-
-   abolish(uses_temp/2),
-   abolish(uses/2),
-   abolish(import_mod/2),
-   abolish(import_pred/2),
-   abolish(export_pred/2),
-   abolish(dynamic_pred/1),
-   abolish(used_by/2),
-   abolish(open_module/1),
-   abolish(warning/1),
-   abolish(discontig_pred/1),
-   abolish(last_clause/1),
-   abolish(file/2),
-   abolish(pred_loc/4),
+   retractall(uses_temp(_,_)),
+   retractall(uses(_,_)),
+   retractall(import_mod(_,_)),
+   retractall(import_pred(_,_)),
+   retractall(export_pred(_,_)),
+   retractall(dynamic_pred(_)),
+   retractall(used_by(_,_)),
+   retractall(open_module(_)),
+   retractall(warning(_)),
+   retractall(discontig_pred(_)),
+   retractall(last_clause(_)),
+%   abolish(file/2),
+   retractall(file(_,_)),
+   retractall(pred_loc(_,_,_,_)),
    assert(open_module(user)).
 
 %-----------------------------------
@@ -125,7 +150,8 @@ xinit :-
 
 xread([]).
 xread([FILE|FILES]) :-
-   file(FILE, _),
+%   catch(file(FILE, _), _, fail),
+   file(FILE,_),
    !,
    xread(FILES).
 xread([FILE|FILES]) :-
@@ -133,19 +159,22 @@ xread([FILE|FILES]) :-
    !,
    xread(FILES).
 xread(FILE) :-
-   fopen(H, FILE, r),
+%   fopen(H, FILE, r),
+   open(FILE, read, H),
    asserta(file(FILE, H)),
    repeat,
-   stream_property(H, line_number(LINE)),
+%   stream_property(H, line_number(LINE)),
+   line_count(H, LINE),
    read(H,X),
-   stream_property(H, line_number(LINE2)),
+%   stream_property(H, line_number(LINE2)),
+   line_count(H, LINE2),
    (bad_term(H, X) ->
       true
       ;
       process(FILE, LINE, LINE2, X) ),
    X == end_of_file,
    !,
-   fclose(H).
+   close(H).
 
 process(FILE, LINE, LINE2,  end_of_file ) :- !.
 process(FILE, LINE, LINE2,  (A --> B) ) :-
@@ -279,7 +308,7 @@ add_dynamic(M, F/A) :-
    assert_dynamic(M:F/A).
 add_dynamic(M, X) :-
    mod_functor(X, MM, F, A),
-   (MM == de$fault -> M3 = M; M3 = MM),
+   (MM == de_fault -> M3 = M; M3 = MM),
    assert_dynamic(M3:F/A).
 
 assert_dynamic(M:F/A) :-
@@ -368,7 +397,7 @@ add_use( ASSERT, L, L3 ) :-
    !,
    (nonvar(G) ->
       mod_functor(G, MG, FG, AG),
-      (MG == de$fault -> open_module(MMG); MMG = MG),
+      (MG == de_fault -> open_module(MMG); MMG = MG),
       add_dynamic(MMG, G),
       insert(MMG:FG/AG, L, L2)
       ;
@@ -386,7 +415,7 @@ add_use(retract(G), L, L3) :-
    insert(M:F/A, L2, L3),
    !.
 add_use( IG, L, L ) :-
-   is_member(IG, [!, true, fail]),
+   memberchk(IG, [!, true, fail]),
    !.
 add_use( !, L, L ) :- !.
 add_use( G, L, L2 ) :-
@@ -420,7 +449,7 @@ resolve_dynamics :-
 resolve_dynamics.
 
 resolve_uses([], _, []).
-resolve_uses([de$fault:F/A|Z1], M, [M2:F/A|Z2]) :-
+resolve_uses([de_fault:F/A|Z1], M, [M2:F/A|Z2]) :-
    find_mod(F/A, M, M2),
    !,
    resolve_uses(Z1, M, Z2).
@@ -465,7 +494,7 @@ visible(M:F/A) :-
 get_used_by :-
    uses(M:F/A, _),
    findall(Mx:Fx/Ax,
-      (uses(Mx:Fx/Ax,L), is_member(M:F/A,L)),
+      (uses(Mx:Fx/Ax,L), memberchk(M:F/A,L)),
       LL),
    insert_list(LL, [], LLL),
    asserta(used_by(M:F/A, LL)),
@@ -602,7 +631,7 @@ set_open_module(X) :-
 
 mod_functor(M:X, M, F, A) :-
    !, functor(X, F, A).
-mod_functor(X, de$fault, F, A) :-
+mod_functor(X, de_fault, F, A) :-
    functor(X, F, A).
 
 insert_list([], L, L).
@@ -628,4 +657,4 @@ write_list([X|Y], Separator) :-
   write(Separator),
   write_list(Y, Separator).
 
-:- end_module(axrf).
+% :- end_module(axrf).
