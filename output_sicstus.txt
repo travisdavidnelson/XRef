@@ -1,0 +1,171 @@
+
+----- Warnings -----
+Dynamic and static definitions for: data:loc/2
+Unused predicate: user:dw_main/0
+
+----- Predicate Use -----
+data:loc/2
+  no subgoals
+  called from:  
+    rules:look_here/1
+    rules:look_have/1
+    rules:look/0
+    rules:take/1
+    rules:chase/1
+    rules:goto/1
+    rules:move/2
+    rules:fox/0
+    rules:ducks/0
+    rules:done/0
+data:nextto/2
+  no subgoals
+  called from:  
+    rules:connect/2
+rules:chase/1
+  subgoals:
+    data:loc/2
+    rules:move/2
+    builtin:nl/0
+    builtin:write/1
+  called from:  
+    rules:do/1
+rules:connect/2
+  subgoals:
+    data:nextto/2
+  called from:  
+    rules:look_connect/1
+    rules:goto/1
+rules:demons/0
+  subgoals:
+    rules:ducks/0
+    rules:fox/0
+  called from:  
+    user:go/0
+rules:do/1
+  subgoals:
+    rules:chase/1
+    rules:goto/1
+    user:instructions/0
+    builtin:listing/0
+    rules:look/0
+    builtin:nl/0
+    rules:report/0
+    rules:take/1
+    builtin:write/1
+  called from:  
+    user:go/0
+rules:done/0
+  subgoals:
+    data:loc/2
+    builtin:nl/0
+    builtin:write/1
+  called from:  
+    user:go/0
+rules:ducks/0
+  subgoals:
+    data:loc/2
+    rules:move/2
+    builtin:nl/0
+    builtin:write/1
+  called from:  
+    rules:demons/0
+rules:fox/0
+  subgoals:
+    data:loc/2
+    builtin:nl/0
+    builtin:write/1
+  called from:  
+    rules:demons/0
+rules:goto/1
+  subgoals:
+    rules:connect/2
+    data:loc/2
+    rules:move/2
+    builtin:nl/0
+    builtin:write/1
+  called from:  
+    rules:do/1
+rules:look/0
+  subgoals:
+    data:loc/2
+    rules:look_connect/1
+    rules:look_have/1
+    rules:look_here/1
+    builtin:nl/0
+    builtin:write/1
+  called from:  
+    rules:do/1
+rules:look_connect/1
+  subgoals:
+    rules:connect/2
+    builtin:nl/0
+    builtin:write/1
+  called from:  
+    rules:look/0
+rules:look_have/1
+  subgoals:
+    data:loc/2
+    builtin:nl/0
+    builtin:write/1
+  called from:  
+    rules:look/0
+rules:look_here/1
+  subgoals:
+    builtin: \= /2
+    data:loc/2
+    builtin:nl/0
+    builtin:write/1
+  called from:  
+    rules:look/0
+rules:move/2
+  subgoals:
+    data:loc/2
+    builtin:assert/1
+    builtin:retract/1
+  called from:  
+    rules:take/1
+    rules:chase/1
+    rules:goto/1
+    rules:ducks/0
+rules:report/0
+  subgoals:
+    builtin:findall/3
+    builtin:nl/0
+    builtin:write/1
+  called from:  
+    rules:do/1
+rules:take/1
+  subgoals:
+    data:loc/2
+    rules:move/2
+    builtin:nl/0
+    builtin:write/1
+  called from:  
+    rules:do/1
+user:dw_main/0
+  subgoals:
+    user:go/0
+    user:instructions/0
+    builtin:nl/0
+    builtin:write/1
+  no callers
+user:go/0
+  subgoals:
+    builtin: \= /2
+    rules:demons/0
+    rules:do/1
+    rules:done/0
+    user:go/0
+    builtin:nl/0
+    builtin:read/1
+    builtin:write/1
+  called from:  
+    user:go/0
+    user:dw_main/0
+user:instructions/0
+  subgoals:
+    builtin:nl/0
+    builtin:write/1
+  called from:  
+    rules:do/1
+    user:dw_main/0

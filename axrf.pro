@@ -150,7 +150,6 @@ xinit :-
 
 xread([]).
 xread([FILE|FILES]) :-
-%   catch(file(FILE, _), _, fail),
    file(FILE,_),
    !,
    xread(FILES).
@@ -240,28 +239,34 @@ process(FILE, LINE, LINE2,  H ) :-
    set_last_clause(M:F/A).
 
 bad_term(H, (A,B) ) :-
-   stream_property(H, line_number(N)),
+%   stream_property(H, line_number(N)),
+   line_count(H, N),
    stream_property(H, file_name(FILE)),
    assert(warning(error, ['File: ', FILE, ' Line: ', N, 'Probable missplaced period before: ', (A,B)])).
 bad_term(H, (A;B) ) :-
-   stream_property(H, line_number(N)),
+%   stream_property(H, line_number(N)),
+   line_count(H, N),
    stream_property(H, file_name(FILE)),
    assert(warning(error, ['File: ', FILE, ' Line: ', N, 'Probable missplaced period before: ', (A;B)])).
 bad_term(H, ((A,B) :- _) ) :-
-   stream_property(H, line_number(N)),
+%   stream_property(H, line_number(N)),
+   line_count(H, N),
    stream_property(H, file_name(FILE)),
    assert(warning(error, ['File: ', FILE, ' Line: ', N, 'Probable missplaced period before: ', (A,B)])).
 bad_term(H, ((A;B) :- _) ) :-
-   stream_property(H, line_number(N)),
+%   stream_property(H, line_number(N)),
+   line_count(H, N),
    stream_property(H, file_name(FILE)),
    assert(warning(error, ['File: ', FILE, ' Line: ', N, 'Probable missplaced period before: ', (A;B)])).
 bad_term(H, ((A:-B) :- _) ) :-
-   stream_property(H, line_number(N)),
+%   stream_property(H, line_number(N)),
+   line_count(H, N),
    stream_property(H, file_name(FILE)),
    assert(warning(error, ['File: ', FILE, ' Line: ', N, 'Probable missplaced period around: ', (A:-B)])).
 bad_term(H, (A:-B) ) :-
    bad_body(B, BADB),
-   stream_property(H, line_number(N)),
+%   stream_property(H, line_number(N)),
+   line_count(H, N),
    stream_property(H, file_name(FILE)),
    assert(warning(error, ['File: ', FILE, ' Line: ', N, 'Probable missing period before: ', BADB])).
 
@@ -460,8 +465,9 @@ find_mod(F/A, M, M) :-
    uses_temp(M:F/A,_),
    !.
 find_mod(F/A, _, builtin) :-
-   current_predicate(amzi_system:F/A),
-   !.
+%   current_predicate(amzi_system:F/A),
+   functor(T, F, A),
+   predicate_property(T, built_in).
 find_mod(F/A, _, extended) :-
    current_predicate(user:F/A),
    predicate_property(user:F/A, extended),
@@ -579,6 +585,12 @@ uses_report :-
          write('no callers') ),
       nl,
       uses_report(Z).
+
+tab(0) :- !.
+tab(N) :-
+        write(' '),
+        NN is N - 1,
+        tab(NN).
 
 warning_report :-
    nl, write('----- Warnings -----'), nl,

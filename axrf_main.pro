@@ -8,8 +8,8 @@ here('/Users/dmerritt/dev/solstice/XRef/').
 main :-
    here(HERE),
    current_directory(_, HERE),
-   axrf:xref(['dw_main.pro', 'dw_rules.pro', 'dw_data.pro']).
-%   axrf:xref(['dw_main.pro', 'dw_rules.pro', 'dw_data.pro'], 'output.txt').
+%   axrf:xref(['dw_main.pro', 'dw_rules.pro', 'dw_data.pro']).
+   axrf:xref(['dw_main.pro', 'dw_rules.pro', 'dw_data.pro'], 'output_sicstus.txt').
 
 main :-
    nl, write('nope'), nl.
