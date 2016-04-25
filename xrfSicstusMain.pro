@@ -36,7 +36,9 @@ uses_report :-
 
 uses_report([]).
 uses_report([M:F/A|Z]) :-
-      write(M:F/A), nl,
+      write(M:F/A),
+      (xrf:dynamic_pred(M:F/A) -> write('   '), write(dynamic); true),
+      nl,
       modified_report(M:F/A),
       subgoal_report(M:F/A),
       called_by_report(M:F/A),
