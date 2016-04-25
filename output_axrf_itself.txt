@@ -1,0 +1,548 @@
+
+----- Warnings -----
+Discontiguous definition of: user:(:-)/1
+Undefined: current_directory/2 in module user called from main/0
+Undefined: xread/1 in module user called from process/4
+Unused predicate: user:,/2
+Unused predicate: user:(:-)/1
+Unused predicate: user:main/0
+Unused predicate: user:xref/1
+Unused predicate: user:xref/3
+
+----- Predicate Use -----
+user:,/2
+   no subgoals
+   no callers
+user:(:-)/1
+   no subgoals
+   no callers
+user:add_discontiguous/2
+   subgoals:
+      user:add_discontiguous/2
+      builtin:assert/1
+      user:discontig_pred/1
+   called from:  
+      user:add_discontiguous/2
+      user:process/4
+user:add_dynamic/2
+   subgoals:
+      builtin: = /2
+      builtin: == /2
+      user:add_dynamic/2
+      user:assert_dynamic/1
+      user:mod_functor/4
+   called from:  
+      user:add_use/3
+      user:add_dynamic/2
+      user:process/4
+user:add_export/2
+   subgoals:
+      user:add_export/2
+      builtin:asserta/1
+      user:export_pred/2
+   called from:  
+      user:add_export/2
+      user:process/4
+user:add_import/2
+   subgoals:
+      user:add_import/2
+      builtin:asserta/1
+      user:import_mod/2
+      user:import_pred/2
+   called from:  
+      user:add_import/2
+      user:process/4
+user:add_use/3
+   subgoals:
+      builtin: = /2
+      builtin: == /2
+      user:add_dynamic/2
+      user:add_use/3
+      user:insert/3
+      user:is_assert/2
+      builtin:memberchk/2
+      user:mod_functor/4
+      builtin:nonvar/1
+      user:open_module/1
+      builtin:var/1
+   called from:  
+      user:add_use/3
+      user:get_uses/2
+user:assert_dynamic/1
+   subgoals:
+      builtin:asserta/1
+      user:dynamic_pred/1
+      user:dynamic_pred/1
+   called from:  
+      user:add_dynamic/2
+user:bad_body/2
+   subgoals:
+      user:bad_body/2
+   called from:  
+      user:bad_body/2
+      user:bad_term/2
+user:bad_term/2
+   subgoals:
+      builtin:assert/1
+      user:bad_body/2
+      builtin:line_count/2
+      builtin:stream_property/2
+      user:warning/2
+   called from:  
+      user:xinput/1
+user:cone_below/1
+   subgoals:
+      axrf:uses/2
+      user:cones_below/3
+      builtin:nl/0
+      user:tab/1
+      builtin:write/1
+   called from:  
+      user:main/0
+user:cones_below/3
+   subgoals:
+      axrf:uses/2
+      user:cones_below/3
+      builtin:is/2
+      builtin:memberchk/2
+      builtin:nl/0
+      user:tab/1
+      builtin:write/1
+   called from:  
+      user:cones_below/3
+      user:cone_below/1
+user:convert_mfa_list/2
+   subgoals:
+      user:convert_mfa_list/2
+      user:get_pred_loc/4
+   called from:  
+      user:convert_mfa_list/2
+      user:convert_used_by/0
+      user:convert_uses/0
+user:convert_used_by/0
+   subgoals:
+      builtin:assertz/1
+      user:convert_mfa_list/2
+      builtin:retract/1
+      user:used_by/2
+      user:used_by2/2
+   called from:  
+      user:get_xlists/2
+user:convert_uses/0
+   subgoals:
+      builtin:assertz/1
+      user:convert_mfa_list/2
+      builtin:retract/1
+      user:uses/2
+      user:uses2/2
+   called from:  
+      user:get_xlists/2
+user:discontig_check/1
+   subgoals:
+      builtin:asserta/1
+      user:discontig_pred/1
+      user:last_clause/1
+      user:uses_temp/2
+      user:warning/2
+   called from:  
+      user:get_uses/2
+      user:get_uses/1
+user:discontig_pred/1
+   no subgoals
+   called from:  
+      user:discontig_check/1
+      user:add_discontiguous/2
+user:dynamic_pred/1
+   no subgoals
+   called from:  
+      user:resolve_dynamics/0
+      user:assert_dynamic/1
+user:export_pred/2
+   no subgoals
+   called from:  
+      user:visible/1
+      user:add_export/2
+user:file/2
+   no subgoals
+   called from:  
+      user:process/4
+      user:xinput/1
+user:find_mod/3
+   subgoals:
+      builtin:current_predicate/1
+      builtin:functor/3
+      user:import_mod/2
+      user:import_pred/2
+      builtin:predicate_property/2
+      user:uses_temp/2
+      user:visible/1
+   called from:  
+      user:resolve_uses/3
+user:get_pred_loc/4
+   subgoals:
+      user:pred_loc/4
+   called from:  
+      user:convert_mfa_list/2
+user:get_used_by/0
+   subgoals:
+      builtin:asserta/1
+      builtin:findall/3
+      user:insert_list/3
+      user:uses/2
+      user:used_by/2
+   called from:  
+      user:get_xlists/2
+      user:xref/1
+user:get_uses/1
+   subgoals:
+      builtin:asserta/1
+      user:discontig_check/1
+      user:uses_temp/2
+      user:uses_temp/2
+   called from:  
+      user:process/4
+user:get_uses/2
+   subgoals:
+      builtin: = /2
+      user:add_use/3
+      builtin:asserta/1
+      user:discontig_check/1
+      builtin:retract/1
+      user:uses_temp/2
+      user:uses_temp/2
+   called from:  
+      user:process/4
+user:get_xlists/2
+   subgoals:
+      user:convert_used_by/0
+      user:convert_uses/0
+      builtin:findall/3
+      user:get_used_by/0
+      user:resolve_uses/0
+      builtin:sort/2
+      user:warn_undefined/0
+      user:warn_unused/0
+   called from:  
+      user:xref/3
+user:here/1
+   no subgoals
+   called from:  
+      user:main/0
+user:import_mod/2
+   no subgoals
+   called from:  
+      user:find_mod/3
+      user:add_import/2
+user:import_pred/2
+   no subgoals
+   called from:  
+      user:find_mod/3
+      user:add_import/2
+user:insert/3
+   subgoals:
+      builtin: @< /2
+      user:insert/3
+   called from:  
+      user:insert/3
+      user:insert_list/3
+      user:add_use/3
+user:insert_list/3
+   subgoals:
+      user:insert/3
+      user:insert_list/3
+   called from:  
+      user:insert_list/3
+      user:get_used_by/0
+user:is_assert/2
+   no subgoals
+   called from:  
+      user:add_use/3
+user:last_clause/1
+   no subgoals
+   called from:  
+      user:set_last_clause/1
+      user:discontig_check/1
+user:main/0
+   subgoals:
+      axrf:xref/1
+      user:cone_below/1
+      undefined:current_directory/2
+      user:here/1
+      builtin:nl/0
+      user:set_tab/1
+      builtin:tell/1
+      builtin:told/0
+      builtin:write/1
+      user:xreport/0
+   no callers
+user:mod_functor/4
+   subgoals:
+      builtin:functor/3
+   called from:  
+      user:add_use/3
+      user:add_dynamic/2
+user:open_module/1
+   no subgoals
+   called from:  
+      user:set_open_module/1
+      user:add_use/3
+      user:process/4
+      user:xinit/0
+user:pred_loc/4
+   no subgoals
+   called from:  
+      user:get_pred_loc/4
+      user:process/4
+user:process/4
+   subgoals:
+      user:add_discontiguous/2
+      user:add_dynamic/2
+      user:add_export/2
+      user:add_import/2
+      builtin:assertz/1
+      builtin:expand_term/2
+      user:file/2
+      builtin:functor/3
+      user:get_uses/1
+      user:get_uses/2
+      builtin:op/3
+      user:open_module/1
+      user:pred_loc/4
+      user:process/4
+      user:set_last_clause/1
+      user:set_open_module/1
+      undefined:xread/1
+      user:pred_loc/4
+   called from:  
+      user:process/4
+      user:xinput/1
+user:resolve_dynamics/0
+   subgoals:
+      builtin:assert/1
+      builtin:asserta/1
+      user:dynamic_pred/1
+      user:uses_temp/2
+      user:uses_temp/2
+      user:warning/2
+   called from:  
+      user:resolve_uses/0
+user:resolve_uses/0
+   subgoals:
+      builtin:assertz/1
+      user:resolve_dynamics/0
+      user:resolve_uses/3
+      user:uses_temp/2
+      user:uses/2
+   called from:  
+      user:get_xlists/2
+      user:xref/1
+user:resolve_uses/3
+   subgoals:
+      user:find_mod/3
+      user:resolve_uses/3
+   called from:  
+      user:resolve_uses/3
+      user:resolve_uses/0
+user:set_last_clause/1
+   subgoals:
+      builtin:assert/1
+      user:last_clause/1
+      builtin:retract/1
+      user:last_clause/1
+   called from:  
+      user:process/4
+user:set_open_module/1
+   subgoals:
+      builtin:assert/1
+      user:open_module/1
+      builtin:retract/1
+      user:open_module/1
+   called from:  
+      user:process/4
+user:set_tab/1
+   subgoals:
+      builtin:assert/1
+      builtin:retractall/1
+      user:tab_text/1
+   called from:  
+      user:main/0
+user:tab/1
+   subgoals:
+      builtin:is/2
+      user:tab/1
+      user:tab_text/1
+      builtin:write/1
+   called from:  
+      user:cones_below/3
+      user:cone_below/1
+      user:tab/1
+      user:uses_report/1
+user:tab_text/1
+   no subgoals
+   called from:  
+      user:set_tab/1
+      user:tab/1
+user:used_by/2
+   no subgoals
+   called from:  
+      user:warn_unused/0
+      user:convert_used_by/0
+      user:get_used_by/0
+user:used_by2/2
+   no subgoals
+   called from:  
+      user:convert_used_by/0
+user:uses/2
+   no subgoals
+   called from:  
+      user:warn_undefined/0
+      user:convert_uses/0
+      user:get_used_by/0
+      user:resolve_uses/0
+user:uses2/2
+   no subgoals
+   called from:  
+      user:convert_uses/0
+user:uses_report/0
+   subgoals:
+      builtin:findall/3
+      builtin:nl/0
+      builtin:sort/2
+      user:uses_report/1
+      builtin:write/1
+   called from:  
+      user:xreport/0
+user:uses_report/1
+   subgoals:
+      axrf:used_by/2
+      axrf:uses/2
+      builtin: \= /2
+      builtin:nl/0
+      user:tab/1
+      user:uses_report/1
+      builtin:write/1
+      user:write_list/2
+   called from:  
+      user:uses_report/1
+      user:uses_report/0
+user:uses_temp/2
+   no subgoals
+   called from:  
+      user:visible/1
+      user:find_mod/3
+      user:resolve_dynamics/0
+      user:resolve_uses/0
+      user:discontig_check/1
+      user:get_uses/2
+      user:get_uses/1
+user:visible/1
+   subgoals:
+      builtin:current_predicate/1
+      user:export_pred/2
+      builtin:predicate_property/2
+      user:uses_temp/2
+   called from:  
+      user:find_mod/3
+user:warn_undef/2
+   subgoals:
+      builtin:asserta/1
+      user:warn_undef/2
+      user:warning/2
+   called from:  
+      user:warn_undef/2
+      user:warn_undefined/0
+user:warn_undefined/0
+   subgoals:
+      user:uses/2
+      user:warn_undef/2
+   called from:  
+      user:get_xlists/2
+      user:xref/1
+user:warn_unused/0
+   subgoals:
+      builtin:asserta/1
+      user:used_by/2
+      user:warning/2
+   called from:  
+      user:get_xlists/2
+      user:xref/1
+user:warning/2
+   no subgoals
+   called from:  
+      user:warn_undef/2
+      user:warn_unused/0
+      user:resolve_dynamics/0
+      user:discontig_check/1
+      user:bad_term/2
+user:warning_report/0
+   subgoals:
+      builtin:findall/3
+      builtin:nl/0
+      builtin:sort/2
+      builtin:write/1
+      user:write_warnings/1
+   called from:  
+      user:xreport/0
+user:write_list/2
+   subgoals:
+      builtin:write/1
+      user:write_list/2
+   called from:  
+      user:write_list/2
+      user:write_warnings/1
+      user:uses_report/1
+user:write_warnings/1
+   subgoals:
+      builtin:nl/0
+      user:write_list/2
+      user:write_warnings/1
+   called from:  
+      user:write_warnings/1
+      user:warning_report/0
+user:xinit/0
+   subgoals:
+      builtin:assert/1
+      builtin:retractall/1
+      user:open_module/1
+   called from:  
+      user:xref/3
+      user:xref/1
+user:xinput/1
+   subgoals:
+      builtin: == /2
+      builtin:asserta/1
+      user:bad_term/2
+      builtin:close/1
+      user:file/2
+      builtin:line_count/2
+      builtin:open/3
+      user:process/4
+      builtin:read/2
+      builtin:repeat/0
+      user:xinput/1
+      user:file/2
+   called from:  
+      user:xinput/1
+      user:xref/3
+      user:xref/1
+user:xref/1
+   subgoals:
+      user:get_used_by/0
+      user:resolve_uses/0
+      user:warn_undefined/0
+      user:warn_unused/0
+      user:xinit/0
+      user:xinput/1
+   no callers
+user:xref/3
+   subgoals:
+      user:get_xlists/2
+      user:xinit/0
+      user:xinput/1
+   no callers
+user:xreport/0
+   subgoals:
+      user:uses_report/0
+      user:warning_report/0
+   called from:  
+      user:main/0

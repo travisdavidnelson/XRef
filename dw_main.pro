@@ -32,13 +32,13 @@
 % code in the 'user' module to refer, without module
 % qualification, to the predicates exported from 'rules'.
 
-:- import(rules).
+:- use_module('dw_rules.pro').
 
 % The code in this file is in module 'user'.  Because that
 % is the default module, it does not need to be specified.
 % The following predicates are all in 'user'.
 
-dw_main :-
+main :-
 	write(' Welcome to Duck World '),nl,
 	instructions,
 	write(' Go get an egg '),nl,

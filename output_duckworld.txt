@@ -1,0 +1,179 @@
+
+----- Warnings -----
+Discontiguous definition of: user:(:-)/1
+Dynamic and static definitions for: user:loc/2
+Unused predicate: user:(:-)/1
+Unused predicate: user:main/0
+
+----- Predicate Use -----
+dw_data:loc/2
+   no subgoals
+   called from:  
+      user:move/2
+user:(:-)/1
+   no subgoals
+   no callers
+user:chase/1
+   subgoals:
+      user:loc/2
+      user:move/2
+      builtin:nl/0
+      builtin:write/1
+   called from:  
+      user:do/1
+user:connect/2
+   subgoals:
+      user:nextto/2
+   called from:  
+      user:look_connect/1
+      user:goto/1
+user:demons/0
+   subgoals:
+      user:ducks/0
+      user:fox/0
+   called from:  
+      user:go/0
+user:do/1
+   subgoals:
+      user:chase/1
+      user:goto/1
+      user:instructions/0
+      builtin:listing/0
+      user:look/0
+      builtin:nl/0
+      user:report/0
+      user:take/1
+      builtin:write/1
+   called from:  
+      user:go/0
+user:done/0
+   subgoals:
+      user:loc/2
+      builtin:nl/0
+      builtin:write/1
+   called from:  
+      user:go/0
+user:ducks/0
+   subgoals:
+      user:loc/2
+      user:move/2
+      builtin:nl/0
+      builtin:write/1
+   called from:  
+      user:demons/0
+user:fox/0
+   subgoals:
+      user:loc/2
+      builtin:nl/0
+      builtin:write/1
+   called from:  
+      user:demons/0
+user:go/0
+   subgoals:
+      builtin: \= /2
+      user:demons/0
+      user:do/1
+      user:done/0
+      user:go/0
+      builtin:nl/0
+      builtin:read/1
+      builtin:write/1
+   called from:  
+      user:go/0
+      user:main/0
+user:goto/1
+   subgoals:
+      user:connect/2
+      user:loc/2
+      user:move/2
+      builtin:nl/0
+      builtin:write/1
+   called from:  
+      user:do/1
+user:instructions/0
+   subgoals:
+      builtin:nl/0
+      builtin:write/1
+   called from:  
+      user:do/1
+      user:main/0
+user:loc/2
+   no subgoals
+   called from:  
+      user:look_here/1
+      user:look_have/1
+      user:look/0
+      user:take/1
+      user:chase/1
+      user:goto/1
+      user:fox/0
+      user:ducks/0
+      user:done/0
+user:look/0
+   subgoals:
+      user:loc/2
+      user:look_connect/1
+      user:look_have/1
+      user:look_here/1
+      builtin:nl/0
+      builtin:write/1
+   called from:  
+      user:do/1
+user:look_connect/1
+   subgoals:
+      user:connect/2
+      builtin:nl/0
+      builtin:write/1
+   called from:  
+      user:look/0
+user:look_have/1
+   subgoals:
+      user:loc/2
+      builtin:nl/0
+      builtin:write/1
+   called from:  
+      user:look/0
+user:look_here/1
+   subgoals:
+      builtin: \= /2
+      user:loc/2
+      builtin:nl/0
+      builtin:write/1
+   called from:  
+      user:look/0
+user:main/0
+   subgoals:
+      user:go/0
+      user:instructions/0
+      builtin:nl/0
+      builtin:write/1
+   no callers
+user:move/2
+   subgoals:
+      builtin:assert/1
+      builtin:retract/1
+      dw_data:loc/2
+   called from:  
+      user:take/1
+      user:chase/1
+      user:goto/1
+      user:ducks/0
+user:nextto/2
+   no subgoals
+   called from:  
+      user:connect/2
+user:report/0
+   subgoals:
+      builtin:findall/3
+      builtin:nl/0
+      builtin:write/1
+   called from:  
+      user:do/1
+user:take/1
+   subgoals:
+      user:loc/2
+      user:move/2
+      builtin:nl/0
+      builtin:write/1
+   called from:  
+      user:do/1

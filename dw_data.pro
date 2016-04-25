@@ -4,8 +4,8 @@
 % asserted/retracted from the other modules, so it is
 % declared as dynamic.
 
-:- module(data).
-:- export([nextto/2, loc/2]).
+:- module(data,
+      [nextto/2, loc/2]).
 :- dynamic(loc/2).
 
 nextto(pen, yard).
@@ -15,4 +15,3 @@ loc(egg,pen).
 loc(ducks,pen).
 loc(you,house).
 
-:- end_module(data).

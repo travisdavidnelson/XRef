@@ -81,18 +81,11 @@
 % To allow running from command line compiled code
 % version.
 
-  
-% Amzi! modules, ISO standard
-% :- module(axrf).
-% :- export([xref/1, xref/2, xref/3]).
-
-:- use_module(library(file_systems)).
-
 % SICStus modules
-:- module(axrf, [
+:- module(xrf, [
     xref/1,
-    xref/2,
     xref/3]).
+:- use_module(library(file_systems)).
 
 :- dynamic
    uses_temp/2,
@@ -103,7 +96,7 @@
    dynamic_pred/1,
    used_by/2,
    open_module/1,
-   warning/1,
+   warning/2,
    discontig_pred/1,
    last_clause/1,
    file/2,
@@ -112,19 +105,16 @@
 
 xref(FILES) :-
    xinit,
-   xread(FILES),
-   xreport.
-
-xref(FILES, OUTPUT) :-
-   xinit,
-   xread(FILES),
-   tell(OUTPUT),
-   xreport,
-   told.
+   xinput(FILES),
+   resolve_uses,
+   get_used_by,
+   get_modified_in,
+   warn_unused,
+   warn_undefined.
 
 xref(FILES, WARNINGS, USES) :-
    xinit,
-   xread(FILES),
+   xinput(FILES),
    get_xlists(WARNINGS, USES).
 
 xinit :-
@@ -136,7 +126,7 @@ xinit :-
    retractall(dynamic_pred(_)),
    retractall(used_by(_,_)),
    retractall(open_module(_)),
-   retractall(warning(_)),
+   retractall(warning(_,_)),
    retractall(discontig_pred(_)),
    retractall(last_clause(_)),
 %   abolish(file/2),
@@ -148,16 +138,17 @@ xinit :-
 % Read the files
 %
 
-xread([]).
-xread([FILE|FILES]) :-
+xinput([]) :- !.
+xinput([FILE|FILES]) :-
    file(FILE,_),
    !,
-   xread(FILES).
-xread([FILE|FILES]) :-
-   xread(FILE),
+   xinput(FILES).
+xinput([FILE|FILES]) :-
+   xinput(FILE),
    !,
-   xread(FILES).
-xread(FILE) :-
+   xinput(FILES).
+
+xinput(FILE) :-
 %   fopen(H, FILE, r),
    open(FILE, read, H),
    asserta(file(FILE, H)),
@@ -182,12 +173,24 @@ process(FILE, LINE, LINE2,  (A --> B) ) :-
    process(FILE, LINE, LINE2, AB).
 process(FILE, LINE, LINE2,  (:- module(M)) ) :-
    !, set_open_module(M).
-process(FILE, LINE, LINE2,  (:- body(M)) ) :-
-   !, set_open_module(M).
-process(FILE, LINE, LINE2,  (:- end_module(_)) ) :-
-   !, set_open_module(user).
-process(FILE, LINE, LINE2,  (:- end_body(_)) ) :-
-   !, set_open_module(user).
+process(FILE, LINE, LINE2,  (:- module(M, IM)) ) :-
+   !,
+   set_open_module(M),
+   assert(module_file(FILE, M)),
+   add_export(M, IM).
+%process(FILE, LINE, LINE2,  (:- body(M)) ) :-
+%   !, set_open_module(M).
+%process(FILE, LINE, LINE2,  (:- end_module(_)) ) :-
+%   !, set_open_module(user).
+%process(FILE, LINE, LINE2,  (:- end_body(_)) ) :-
+%   !, set_open_module(user).
+process(FILE, LINE, LINE2,  (:- use_module(MF)) ) :-
+   !,
+   open_module(M),
+   xinput(MF),
+   module_file(MF, IM),
+   add_import(M, IM),
+   set_open_module(M).
 process(FILE, LINE, LINE2,  (:- import(IM)) ) :-
    !,
    open_module(M),
@@ -404,20 +407,22 @@ add_use( ASSERT, L, L3 ) :-
       mod_functor(G, MG, FG, AG),
       (MG == de_fault -> open_module(MMG); MMG = MG),
       add_dynamic(MMG, G),
-      insert(MMG:FG/AG, L, L2)
+      insert(assert-MG:FG/AG, L, L3)
       ;
-      L2 = L ),
-   mod_functor(ASSERT, M, F, A),
-   insert(M:F/A, L2, L3),
+      mod_functor(ASSERT, M, F, A),
+      insert(M:F/A, L, L3)
+   ),
    !.
 add_use(retract(G), L, L3) :-
    (nonvar(G) ->
       mod_functor(G, MG, FG, AG),
-      insert(MG:FG/AG, L, L2)
+      (MG == de_fault -> open_module(MMG); MMG = MG),
+      add_dynamic(MMG, G),
+      insert(retract-MG:FG/AG, L, L3)
       ;
-      L2 = L ),
-   mod_functor(retract(G), M, F, A),
-   insert(M:F/A, L2, L3),
+      mod_functor(retract(G), M, F, A),
+      insert(M:F/A, L, L3)
+   ),
    !.
 add_use( IG, L, L ) :-
    memberchk(IG, [!, true, fail]),
@@ -503,10 +508,20 @@ get_used_by :-
       (uses(Mx:Fx/Ax,L), memberchk(M:F/A,L)),
       LL),
    insert_list(LL, [], LLL),
-   asserta(used_by(M:F/A, LL)),
+   asserta(used_by(M:F/A, LLL)),
    fail.
 get_used_by.
-   
+
+get_modified_in :-
+   uses(M:F/A, _),
+   findall(Mx:Fx/Ax,
+      (uses(Mx:Fx/Ax,L), (memberchk(assert-M:F/A,L);memberchk(retract-M:F/A,L))),
+      LL),
+   insert_list(LL, [], LLL),
+   asserta(modified_in(M:F/A, LLL)),
+   fail.
+get_modified_in.
+
 
 %------------------------------------
 % Analyze and Report
@@ -549,60 +564,6 @@ convert_mfa_list([M:F/A | T], [loc(M:F/A, FILE, LINE, LINE2) | T2]) :-
    !,
    convert_mfa_list(T, T2).
 
-xreport :-
-   resolve_uses,
-   get_used_by,
-   warn_unused,
-   warn_undefined,
-   warning_report,
-   uses_report.
-
-uses_report :-
-   nl, write('----- Predicate Use -----'), nl,
-   findall(M:F/A, uses(M:F/A,_), L),
-   sort(L, SL),
-   uses_report(SL).
-
-   uses_report([]).
-   uses_report([M:F/A|Z]) :-
-      write(M:F/A), nl,
-      uses(M:F/A, L),
-      tab(2),
-      (L \= [] ->
-         write('subgoals:'),
-         nl, tab(4),
-         write_list(L, '\n    ')
-         ;
-         write('no subgoals') ),
-      nl,
-      used_by(M:F/A, L2),
-      tab(2),
-      (L2 \= [] ->
-         write('called from:  '),
-         nl, tab(4),
-         write_list(L2, '\n    ')
-         ;
-         write('no callers') ),
-      nl,
-      uses_report(Z).
-
-tab(0) :- !.
-tab(N) :-
-        write(' '),
-        NN is N - 1,
-        tab(NN).
-
-warning_report :-
-   nl, write('----- Warnings -----'), nl,
-   findall(W, warning(_, W), Ws),
-   sort(Ws, SWs),
-   write_warnings(SWs).
-   
-write_warnings([]).
-write_warnings([W|Ws]) :-
-   write_list(W, ''), nl,
-   write_warnings(Ws).
-
 %-----------------------------------
 % Generate warnings
 %
@@ -619,14 +580,14 @@ warn_undefined :-
    fail.
 warn_undefined.
 
-   warn_undef([],_) :- !.
-   warn_undef([undefined:F1/A1|Z], M:F/A) :-
+warn_undef([],_) :- !.
+warn_undef([undefined:F1/A1|Z], M:F/A) :-
       asserta(warning(warning, 
          ['Undefined: ', F1/A1, ' in module ', M, ' called from ', F/A]
          )),
       !,
       warn_undef(Z, M:F/A).
-   warn_undef([_|Z], MFA) :-
+warn_undef([_|Z], MFA) :-
       warn_undef(Z, MFA).
 
 
@@ -660,13 +621,5 @@ insert(A, [B|Z], [A,B|Z]) :-
    !.
 insert(B, [A|Y], [A|Z]) :-
    insert(B,Y,Z).
-
-write_list([], _).
-write_list([X], _) :-
-  !, write(X).
-write_list([X|Y], Separator) :-
-  write(X),
-  write(Separator),
-  write_list(Y, Separator).
 
 % :- end_module(axrf).

@@ -4,9 +4,11 @@
 % 'user' module.  The 'data' module is imported, so it's
 % predicates can be referred to from this module. 
 
-:- module(rules).
-:- export([done/0, do/1, demons/0]).
-:- import(data).
+:- module(rules,
+       [done/0, do/1, demons/0]).
+
+:- use_module('dw_data.pro').
+
 
 connect(X,Y) :-
         nextto(X,Y).
@@ -118,4 +120,3 @@ report :-
         findall(X:Y, loc(X,Y), L),
         write(L), nl.
 	
-:- end_module(rules).
