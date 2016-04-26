@@ -13,15 +13,18 @@ main :-
    set_tab('   '),
    xrf:xref(['dw_main.pro']),
 %   xrf:xref(['xrfSicstusMain.pro', 'xrfSicstus.pro']),
-%   tell('output_duckworld.txt'),
+   tell('output.txt'),
    xreport,
-%   told,
    set_tab('.  '),
-   cone_below(user:main/0),
-   cone_above(data:loc/2).
+   tops(TOPS),
+   tops_down(TOPS),
+   bottoms(BOTTOMS),
+   bottoms_up(BOTTOMS),
+   told.
 
 main :-
    nl, write('nope'), nl.
+
 
 
 xreport :-
@@ -90,6 +93,32 @@ tab(N) :-
 set_tab(T) :-
         retractall(tab_text(_)),
         assert(tab_text(T)).
+
+tops(TOPS) :-
+     findall(M:F/A, xrf:used_by(M:F/A, []), TOPS).
+
+bottoms(BOTTOMS) :-
+     findall(M:F/A, xrf:dynamic_pred(M:F/A), BOTTOMS).
+
+tops_down([]).
+tops_down([M:F/A | MFAs]) :-
+     nl,
+     write('----- Going Down   '),
+     write(M:F/A),
+     write(' ----------'),
+     nl,nl,
+     cone_below(M:F/A),
+     !, tops_down(MFAs).
+
+bottoms_up([]).
+bottoms_up([M:F/A | MFAs]) :-
+     nl,
+     write('----- Coming Up   '),
+     write(M:F/A),
+     write(' ----------'),
+     nl,nl,
+     cone_above(M:F/A),
+     !, bottoms_up(MFAs).
 
 cone_below(M:F/A) :-
      nl,
