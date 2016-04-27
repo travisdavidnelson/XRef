@@ -5,20 +5,18 @@
 
 :- dynamic tab_text/1.
 
-here('/Users/tnelson/dev/solstice/XRef/').
-
 io(xrf,
-    '/Users/dmerritt/dev/solstice/XRef/',
+    '~/dev/solstice/XRef/',
     ['xrfSicstusMain.pro'],
     'xrf_XRef.txt').
 io(duckworld,
-    '/Users/dmerritt/dev/solstice/XRef/',
-    ['dwMain.pro'],
+    '~/dev/solstice/XRef/',
+    ['dw_main.pro'],
     'xrf_DuckWorld.txt').
 io(sessionManager,
-    '/Users/dmerritt/dev/solstice/Solstice/src/prolog/Session/',
+    '~/dev/solstice/Solstice/src/prolog/Session/',
     ['sessionManager.pro'],
-    '/Users/dmerritt/dev/solstice/XRef/xrf_SessionManager.txt').
+    '~/dev/solstice/XRef/xrf_SessionManager.txt').
 
 main :-
    io(sessionManager, DIR, FILES, OUT),
