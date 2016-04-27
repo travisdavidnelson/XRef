@@ -7,13 +7,28 @@
 
 here('/Users/dmerritt/dev/solstice/XRef/').
 
+io(xrf,
+    '/Users/dmerritt/dev/solstice/XRef/',
+    ['xrfSicstusMain.pro'],
+    'xrf_XRef.txt').
+io(duckworld,
+    '/Users/dmerritt/dev/solstice/XRef/',
+    ['dwMain.pro'],
+    'xrf_DuckWorld.txt').
+io(sessionManager,
+    '/Users/dmerritt/dev/solstice/Solstice/src/prolog/Session/',
+    ['sessionManager.pro'],
+    '/Users/dmerritt/dev/solstice/XRef/xrf_SessionManager.txt').
+
 main :-
-   here(HERE),
-   current_directory(_, HERE),
+   io(sessionManager, DIR, FILES, OUT),
+   cross_reference(DIR, FILES, OUT).
+   
+cross_reference(DIR, FILES, OUT) :-
+   current_directory(_, DIR),
    set_tab('   '),
-   xrf:xref(['dw_main.pro']),
-%   xrf:xref(['xrfSicstusMain.pro', 'xrfSicstus.pro']),
-   tell('output.txt'),
+   xrf:xref(FILES),
+   tell(OUT),
    xreport,
    set_tab('.  '),
    tops(TOPS),
@@ -21,11 +36,6 @@ main :-
    bottoms(BOTTOMS),
    bottoms_up(BOTTOMS),
    told.
-
-main :-
-   nl, write('nope'), nl.
-
-
 
 xreport :-
    warning_report,
@@ -106,7 +116,7 @@ tops_down([M:F/A | MFAs]) :-
      write('----- Going Down   '),
      write(M:F/A),
      write(' ----------'),
-     nl,nl,
+     nl,
      cone_below(M:F/A),
      !, tops_down(MFAs).
 
@@ -116,7 +126,7 @@ bottoms_up([M:F/A | MFAs]) :-
      write('----- Coming Up   '),
      write(M:F/A),
      write(' ----------'),
-     nl,nl,
+     nl,
      cone_above(M:F/A),
      !, bottoms_up(MFAs).
 
@@ -147,7 +157,7 @@ cones_below([_ | MFAs], I, Visited) :-
 
 cone_above(M:F/A) :-
      nl,
-     write(M:F/A), write('   '), write('modified in:'), nl,
+     write(M:F/A), write('   '), write('modified in and callers upstream:'), nl,
      xrf:modified_in(M:F/A, L),
      cones_above(L, 1, [M:F/A]),
      nl,

@@ -1,0 +1,1558 @@
+
+----- Warnings -----
+Undefined: xread/1 in module xrf called from process/4
+Unused predicate: user:main/0
+Unused predicate: xrf:(?)/1
+Unused predicate: xrf:get_xlists/2
+Unused predicate: xrf:used_by2/2
+Unused predicate: xrf:uses2/2
+Unused predicate: xrf:warning/2
+
+----- Predicate Use -----
+user:bottoms/1
+   subgoals:
+      builtin:findall/3
+   called from:  
+      user:main/0
+user:bottoms_up/1
+   subgoals:
+      user:bottoms_up/1
+      user:cone_above/1
+      builtin:nl/0
+      builtin:write/1
+   called from:  
+      user:bottoms_up/1
+      user:main/0
+user:called_by_report/1
+   subgoals:
+      builtin: \= /2
+      builtin:nl/0
+      user:tab/1
+      builtin:write/1
+      user:write_list/2
+      xrf:used_by/2
+   called from:  
+      user:uses_report/1
+user:cone_above/1
+   subgoals:
+      user:cones_above/3
+      builtin:nl/0
+      builtin:write/1
+      xrf:modified_in/2
+      xrf:used_by/2
+   called from:  
+      user:bottoms_up/1
+user:cone_below/1
+   subgoals:
+      user:cones_below/3
+      builtin:nl/0
+      builtin:write/1
+      xrf:uses/2
+   called from:  
+      user:tops_down/1
+user:cones_above/3
+   subgoals:
+      user:cones_above/3
+      builtin:is/2
+      builtin:memberchk/2
+      builtin:nl/0
+      user:tab/1
+      builtin:write/1
+      xrf:used_by/2
+   called from:  
+      user:cone_above/1
+      user:cones_above/3
+user:cones_below/3
+   subgoals:
+      user:cones_below/3
+      builtin:is/2
+      builtin:memberchk/2
+      builtin:nl/0
+      user:tab/1
+      builtin:write/1
+      xrf:uses/2
+   called from:  
+      user:cone_below/1
+      user:cones_below/3
+user:here/1
+   no subgoals
+   called from:  
+      user:main/0
+user:main/0
+   subgoals:
+      user:bottoms/1
+      user:bottoms_up/1
+      file_systems:current_directory/2
+      user:here/1
+      builtin:nl/0
+      user:set_tab/1
+      builtin:tell/1
+      builtin:told/0
+      user:tops/1
+      user:tops_down/1
+      builtin:write/1
+      user:xreport/0
+      xrf:xref/1
+   no callers
+user:modified_report/1
+   subgoals:
+      builtin: \= /2
+      builtin:nl/0
+      user:tab/1
+      builtin:write/1
+      user:write_list/2
+      xrf:dynamic_pred/1
+      xrf:modified_in/2
+   called from:  
+      user:uses_report/1
+user:set_tab/1
+   subgoals:
+      builtin:retractall/1
+      assert-user:tab_text/1
+   called from:  
+      user:main/0
+user:subgoal_report/1
+   subgoals:
+      builtin: \= /2
+      builtin:nl/0
+      user:tab/1
+      builtin:write/1
+      user:write_list/2
+      xrf:uses/2
+   called from:  
+      user:uses_report/1
+user:tab/1
+   subgoals:
+      builtin:is/2
+      user:tab/1
+      user:tab_text/1
+      builtin:write/1
+   called from:  
+      user:called_by_report/1
+      user:cones_above/3
+      user:cones_below/3
+      user:modified_report/1
+      user:subgoal_report/1
+      user:tab/1
+user:tab_text/1   dynamic
+   modified in:
+      user:set_tab/1
+   no subgoals
+   called from:  
+      user:tab/1
+user:tops/1
+   subgoals:
+      builtin:findall/3
+   called from:  
+      user:main/0
+user:tops_down/1
+   subgoals:
+      user:cone_below/1
+      builtin:nl/0
+      user:tops_down/1
+      builtin:write/1
+   called from:  
+      user:main/0
+      user:tops_down/1
+user:uses_report/0
+   subgoals:
+      builtin:findall/3
+      builtin:nl/0
+      builtin:sort/2
+      user:uses_report/1
+      builtin:write/1
+   called from:  
+      user:xreport/0
+user:uses_report/1
+   subgoals:
+      user:called_by_report/1
+      user:modified_report/1
+      builtin:nl/0
+      user:subgoal_report/1
+      user:uses_report/1
+      builtin:write/1
+      xrf:dynamic_pred/1
+   called from:  
+      user:uses_report/0
+      user:uses_report/1
+user:warning_report/0
+   subgoals:
+      builtin:findall/3
+      builtin:nl/0
+      builtin:sort/2
+      builtin:write/1
+      user:write_warnings/1
+   called from:  
+      user:xreport/0
+user:write_list/2
+   subgoals:
+      builtin:write/1
+      user:write_list/2
+   called from:  
+      user:called_by_report/1
+      user:modified_report/1
+      user:subgoal_report/1
+      user:write_list/2
+      user:write_warnings/1
+user:write_warnings/1
+   subgoals:
+      builtin:nl/0
+      user:write_list/2
+      user:write_warnings/1
+   called from:  
+      user:warning_report/0
+      user:write_warnings/1
+user:xreport/0
+   subgoals:
+      user:uses_report/0
+      user:warning_report/0
+   called from:  
+      user:main/0
+xrf:(?)/1
+   subgoals:
+      builtin:nl/0
+      builtin:writeq/1
+   no callers
+xrf:add_discontiguous/2
+   subgoals:
+      xrf:add_discontiguous/2
+      assert-xrf:discontig_pred/1
+   called from:  
+      xrf:add_discontiguous/2
+      xrf:process/4
+xrf:add_dynamic/2
+   subgoals:
+      builtin: = /2
+      builtin: == /2
+      xrf:add_dynamic/2
+      xrf:assert_dynamic/1
+      xrf:mod_functor/4
+   called from:  
+      xrf:add_dynamic/2
+      xrf:add_use/3
+      xrf:process/4
+xrf:add_export/2
+   subgoals:
+      xrf:add_export/2
+      assert-xrf:export_pred/2
+   called from:  
+      xrf:add_export/2
+      xrf:process/4
+xrf:add_import/2
+   subgoals:
+      xrf:add_import/2
+      assert-xrf:import_mod/2
+      assert-xrf:import_pred/2
+   called from:  
+      xrf:add_import/2
+      xrf:process/4
+xrf:add_use/3
+   subgoals:
+      builtin: = /2
+      builtin: == /2
+      xrf:add_dynamic/2
+      xrf:add_use/3
+      xrf:insert/3
+      xrf:is_assert/2
+      builtin:memberchk/2
+      xrf:mod_functor/4
+      builtin:nonvar/1
+      xrf:open_module/1
+      builtin:var/1
+   called from:  
+      xrf:add_use/3
+      xrf:get_uses/2
+xrf:assert_dynamic/1
+   subgoals:
+      xrf:dynamic_pred/1
+      assert-xrf:dynamic_pred/1
+   called from:  
+      xrf:add_dynamic/2
+xrf:bad_body/2
+   subgoals:
+      xrf:bad_body/2
+   called from:  
+      xrf:bad_body/2
+      xrf:bad_term/2
+xrf:bad_term/2
+   subgoals:
+      xrf:bad_body/2
+      builtin:line_count/2
+      builtin:stream_property/2
+      assert-xrf:warning/2
+   called from:  
+      xrf:xinput/1
+xrf:convert_mfa_list/2
+   subgoals:
+      xrf:convert_mfa_list/2
+      xrf:get_pred_loc/4
+   called from:  
+      xrf:convert_mfa_list/2
+      xrf:convert_used_by/0
+      xrf:convert_uses/0
+xrf:convert_used_by/0
+   subgoals:
+      xrf:convert_mfa_list/2
+      assert-xrf:used_by2/2
+      retract-de_fault:used_by/2
+   called from:  
+      xrf:get_xlists/2
+xrf:convert_uses/0
+   subgoals:
+      xrf:convert_mfa_list/2
+      assert-xrf:uses2/2
+      retract-de_fault:uses/2
+   called from:  
+      xrf:get_xlists/2
+xrf:discontig_check/1
+   subgoals:
+      xrf:discontig_pred/1
+      xrf:last_clause/1
+      xrf:uses_temp/2
+      assert-xrf:warning/2
+   called from:  
+      xrf:get_uses/1
+      xrf:get_uses/2
+xrf:discontig_pred/1   dynamic
+   modified in:
+      xrf:add_discontiguous/2
+   no subgoals
+   called from:  
+      xrf:discontig_check/1
+xrf:dynamic_pred/1   dynamic
+   modified in:
+      xrf:assert_dynamic/1
+   no subgoals
+   called from:  
+      user:modified_report/1
+      user:uses_report/1
+      xrf:assert_dynamic/1
+      xrf:resolve_dynamics/0
+xrf:export_pred/2   dynamic
+   modified in:
+      xrf:add_export/2
+   no subgoals
+   called from:  
+      xrf:visible/1
+xrf:file/2   dynamic
+   modified in:
+      xrf:xinput/1
+   no subgoals
+   called from:  
+      xrf:process/4
+      xrf:xinput/1
+xrf:find_mod/3
+   subgoals:
+      builtin:current_predicate/1
+      builtin:functor/3
+      xrf:import_mod/2
+      xrf:import_pred/2
+      builtin:predicate_property/2
+      xrf:uses_temp/2
+      xrf:visible/1
+   called from:  
+      xrf:resolve_uses/3
+xrf:get_modified_in/0
+   subgoals:
+      builtin:findall/3
+      xrf:insert_list/3
+      xrf:uses/2
+      assert-xrf:modified_in/2
+   called from:  
+      xrf:xref/1
+xrf:get_pred_loc/4
+   subgoals:
+      xrf:pred_loc/4
+   called from:  
+      xrf:convert_mfa_list/2
+xrf:get_used_by/0
+   subgoals:
+      builtin:findall/3
+      xrf:insert_list/3
+      xrf:uses/2
+      assert-xrf:used_by/2
+   called from:  
+      xrf:get_xlists/2
+      xrf:xref/1
+xrf:get_uses/1
+   subgoals:
+      xrf:discontig_check/1
+      xrf:uses_temp/2
+      assert-xrf:uses_temp/2
+   called from:  
+      xrf:process/4
+xrf:get_uses/2
+   subgoals:
+      builtin: = /2
+      xrf:add_use/3
+      xrf:discontig_check/1
+      assert-xrf:uses_temp/2
+      retract-de_fault:uses_temp/2
+   called from:  
+      xrf:process/4
+xrf:get_xlists/2
+   subgoals:
+      xrf:convert_used_by/0
+      xrf:convert_uses/0
+      builtin:findall/3
+      xrf:get_used_by/0
+      xrf:resolve_uses/0
+      builtin:sort/2
+      xrf:warn_undefined/0
+      xrf:warn_unused/0
+   no callers
+xrf:import_mod/2   dynamic
+   modified in:
+      xrf:add_import/2
+   no subgoals
+   called from:  
+      xrf:find_mod/3
+xrf:import_pred/2   dynamic
+   modified in:
+      xrf:add_import/2
+   no subgoals
+   called from:  
+      xrf:find_mod/3
+xrf:insert/3
+   subgoals:
+      builtin: @< /2
+      xrf:insert/3
+   called from:  
+      xrf:add_use/3
+      xrf:insert/3
+      xrf:insert_list/3
+xrf:insert_list/3
+   subgoals:
+      xrf:insert/3
+      xrf:insert_list/3
+   called from:  
+      xrf:get_modified_in/0
+      xrf:get_used_by/0
+      xrf:insert_list/3
+xrf:is_assert/2
+   no subgoals
+   called from:  
+      xrf:add_use/3
+xrf:last_clause/1   dynamic
+   modified in:
+      xrf:set_last_clause/1
+   no subgoals
+   called from:  
+      xrf:discontig_check/1
+xrf:mod_functor/4
+   subgoals:
+      builtin:functor/3
+   called from:  
+      xrf:add_dynamic/2
+      xrf:add_use/3
+xrf:modified_in/2   dynamic
+   modified in:
+      xrf:get_modified_in/0
+   no subgoals
+   called from:  
+      user:cone_above/1
+      user:modified_report/1
+xrf:module_file/2   dynamic
+   modified in:
+      xrf:process/4
+   no subgoals
+   called from:  
+      xrf:process/4
+xrf:open_module/1   dynamic
+   modified in:
+      xrf:set_open_module/1
+      xrf:xinit/0
+   no subgoals
+   called from:  
+      xrf:add_use/3
+      xrf:process/4
+xrf:pred_loc/4   dynamic
+   modified in:
+      xrf:process/4
+   no subgoals
+   called from:  
+      xrf:get_pred_loc/4
+      xrf:process/4
+xrf:process/4
+   subgoals:
+      xrf:add_discontiguous/2
+      xrf:add_dynamic/2
+      xrf:add_export/2
+      xrf:add_import/2
+      builtin:expand_term/2
+      xrf:file/2
+      builtin:functor/3
+      xrf:get_uses/1
+      xrf:get_uses/2
+      xrf:module_file/2
+      builtin:op/3
+      xrf:open_module/1
+      xrf:pred_loc/4
+      xrf:process/4
+      xrf:set_last_clause/1
+      xrf:set_open_module/1
+      xrf:xinput/1
+      undefined:xread/1
+      assert-xrf:module_file/2
+      assert-xrf:pred_loc/4
+   called from:  
+      xrf:process/4
+      xrf:xinput/1
+xrf:resolve_dynamics/0
+   subgoals:
+      xrf:dynamic_pred/1
+      xrf:uses_temp/2
+      assert-xrf:uses_temp/2
+      assert-xrf:warning/2
+   called from:  
+      xrf:resolve_uses/0
+xrf:resolve_uses/0
+   subgoals:
+      xrf:resolve_dynamics/0
+      xrf:resolve_uses/3
+      xrf:uses_temp/2
+      assert-xrf:uses/2
+   called from:  
+      xrf:get_xlists/2
+      xrf:xref/1
+xrf:resolve_uses/3
+   subgoals:
+      xrf:find_mod/3
+      xrf:resolve_uses/3
+   called from:  
+      xrf:resolve_uses/0
+      xrf:resolve_uses/3
+xrf:set_last_clause/1
+   subgoals:
+      assert-xrf:last_clause/1
+      retract-de_fault:last_clause/1
+   called from:  
+      xrf:process/4
+xrf:set_open_module/1
+   subgoals:
+      assert-xrf:open_module/1
+      retract-de_fault:open_module/1
+   called from:  
+      xrf:process/4
+xrf:used_by/2   dynamic
+   modified in:
+      xrf:get_used_by/0
+   no subgoals
+   called from:  
+      user:called_by_report/1
+      user:cone_above/1
+      user:cones_above/3
+      xrf:warn_unused/0
+xrf:used_by2/2   dynamic
+   modified in:
+      xrf:convert_used_by/0
+   no subgoals
+   no callers
+xrf:uses/2   dynamic
+   modified in:
+      xrf:resolve_uses/0
+   no subgoals
+   called from:  
+      user:cone_below/1
+      user:cones_below/3
+      user:subgoal_report/1
+      xrf:get_modified_in/0
+      xrf:get_used_by/0
+      xrf:warn_undefined/0
+xrf:uses2/2   dynamic
+   modified in:
+      xrf:convert_uses/0
+   no subgoals
+   no callers
+xrf:uses_temp/2   dynamic
+   modified in:
+      xrf:get_uses/1
+      xrf:get_uses/2
+      xrf:resolve_dynamics/0
+   no subgoals
+   called from:  
+      xrf:discontig_check/1
+      xrf:find_mod/3
+      xrf:get_uses/1
+      xrf:resolve_dynamics/0
+      xrf:resolve_uses/0
+      xrf:visible/1
+xrf:visible/1
+   subgoals:
+      builtin:current_predicate/1
+      xrf:export_pred/2
+      builtin:predicate_property/2
+      xrf:uses_temp/2
+   called from:  
+      xrf:find_mod/3
+xrf:warn_undef/2
+   subgoals:
+      xrf:warn_undef/2
+      assert-xrf:warning/2
+   called from:  
+      xrf:warn_undef/2
+      xrf:warn_undefined/0
+xrf:warn_undefined/0
+   subgoals:
+      xrf:uses/2
+      xrf:warn_undef/2
+   called from:  
+      xrf:get_xlists/2
+      xrf:xref/1
+xrf:warn_unused/0
+   subgoals:
+      xrf:used_by/2
+      assert-xrf:warning/2
+   called from:  
+      xrf:get_xlists/2
+      xrf:xref/1
+xrf:warning/2   dynamic
+   modified in:
+      xrf:bad_term/2
+      xrf:discontig_check/1
+      xrf:resolve_dynamics/0
+      xrf:warn_undef/2
+      xrf:warn_unused/0
+   no subgoals
+   no callers
+xrf:xinit/0
+   subgoals:
+      builtin:retractall/1
+      assert-xrf:open_module/1
+   called from:  
+      xrf:xref/1
+xrf:xinput/1
+   subgoals:
+      builtin: == /2
+      xrf:bad_term/2
+      builtin:close/1
+      xrf:file/2
+      builtin:line_count/2
+      builtin:open/3
+      xrf:process/4
+      builtin:read/2
+      builtin:repeat/0
+      xrf:xinput/1
+      assert-xrf:file/2
+   called from:  
+      xrf:process/4
+      xrf:xinput/1
+      xrf:xref/1
+xrf:xref/1
+   subgoals:
+      xrf:get_modified_in/0
+      xrf:get_used_by/0
+      xrf:resolve_uses/0
+      xrf:warn_undefined/0
+      xrf:warn_unused/0
+      xrf:xinit/0
+      xrf:xinput/1
+   called from:  
+      user:main/0
+
+----- Going Down   xrf:get_xlists/2 ----------
+
+xrf:get_xlists/2    uses:
+.  xrf:convert_used_by/0
+.  .  xrf:convert_mfa_list/2
+.  .  .  xrf:convert_mfa_list/2  ***** looping *****
+.  .  .  xrf:get_pred_loc/4
+.  .  .  .  xrf:pred_loc/4
+.  .  assert-xrf:used_by2/2
+.  .  retract-de_fault:used_by/2
+.  xrf:convert_uses/0
+.  .  xrf:convert_mfa_list/2
+.  .  .  xrf:convert_mfa_list/2  ***** looping *****
+.  .  .  xrf:get_pred_loc/4
+.  .  .  .  xrf:pred_loc/4
+.  .  assert-xrf:uses2/2
+.  .  retract-de_fault:uses/2
+.  builtin:findall/3
+.  xrf:get_used_by/0
+.  .  builtin:findall/3
+.  .  xrf:insert_list/3
+.  .  .  xrf:insert/3
+.  .  .  .  builtin: @< /2
+.  .  .  .  xrf:insert/3  ***** looping *****
+.  .  .  xrf:insert_list/3  ***** looping *****
+.  .  xrf:uses/2
+.  .  assert-xrf:used_by/2
+.  xrf:resolve_uses/0
+.  .  xrf:resolve_dynamics/0
+.  .  .  xrf:dynamic_pred/1
+.  .  .  xrf:uses_temp/2
+.  .  .  assert-xrf:uses_temp/2
+.  .  .  assert-xrf:warning/2
+.  .  xrf:resolve_uses/3
+.  .  .  xrf:find_mod/3
+.  .  .  .  builtin:current_predicate/1
+.  .  .  .  builtin:functor/3
+.  .  .  .  xrf:import_mod/2
+.  .  .  .  xrf:import_pred/2
+.  .  .  .  builtin:predicate_property/2
+.  .  .  .  xrf:uses_temp/2
+.  .  .  .  xrf:visible/1
+.  .  .  .  .  builtin:current_predicate/1
+.  .  .  .  .  xrf:export_pred/2
+.  .  .  .  .  builtin:predicate_property/2
+.  .  .  .  .  xrf:uses_temp/2
+.  .  .  xrf:resolve_uses/3  ***** looping *****
+.  .  xrf:uses_temp/2
+.  .  assert-xrf:uses/2
+.  builtin:sort/2
+.  xrf:warn_undefined/0
+.  .  xrf:uses/2
+.  .  xrf:warn_undef/2
+.  .  .  xrf:warn_undef/2  ***** looping *****
+.  .  .  assert-xrf:warning/2
+.  xrf:warn_unused/0
+.  .  xrf:used_by/2
+.  .  assert-xrf:warning/2
+
+----- Going Down   xrf:(?)/1 ----------
+
+xrf:(?)/1    uses:
+.  builtin:nl/0
+.  builtin:writeq/1
+
+----- Going Down   user:main/0 ----------
+
+user:main/0    uses:
+.  user:bottoms/1
+.  .  builtin:findall/3
+.  user:bottoms_up/1
+.  .  user:bottoms_up/1  ***** looping *****
+.  .  user:cone_above/1
+.  .  .  user:cones_above/3
+.  .  .  .  user:cones_above/3  ***** looping *****
+.  .  .  .  builtin:is/2
+.  .  .  .  builtin:memberchk/2
+.  .  .  .  builtin:nl/0
+.  .  .  .  user:tab/1
+.  .  .  .  .  builtin:is/2
+.  .  .  .  .  user:tab/1  ***** looping *****
+.  .  .  .  .  user:tab_text/1
+.  .  .  .  .  builtin:write/1
+.  .  .  .  builtin:write/1
+.  .  .  .  xrf:used_by/2
+.  .  .  builtin:nl/0
+.  .  .  builtin:write/1
+.  .  .  xrf:modified_in/2
+.  .  .  xrf:used_by/2
+.  .  builtin:nl/0
+.  .  builtin:write/1
+.  file_systems:current_directory/2
+.  user:here/1
+.  builtin:nl/0
+.  user:set_tab/1
+.  .  builtin:retractall/1
+.  .  assert-user:tab_text/1
+.  builtin:tell/1
+.  builtin:told/0
+.  user:tops/1
+.  .  builtin:findall/3
+.  user:tops_down/1
+.  .  user:cone_below/1
+.  .  .  user:cones_below/3
+.  .  .  .  user:cones_below/3  ***** looping *****
+.  .  .  .  builtin:is/2
+.  .  .  .  builtin:memberchk/2
+.  .  .  .  builtin:nl/0
+.  .  .  .  user:tab/1
+.  .  .  .  .  builtin:is/2
+.  .  .  .  .  user:tab/1  ***** looping *****
+.  .  .  .  .  user:tab_text/1
+.  .  .  .  .  builtin:write/1
+.  .  .  .  builtin:write/1
+.  .  .  .  xrf:uses/2
+.  .  .  builtin:nl/0
+.  .  .  builtin:write/1
+.  .  .  xrf:uses/2
+.  .  builtin:nl/0
+.  .  user:tops_down/1  ***** looping *****
+.  .  builtin:write/1
+.  builtin:write/1
+.  user:xreport/0
+.  .  user:uses_report/0
+.  .  .  builtin:findall/3
+.  .  .  builtin:nl/0
+.  .  .  builtin:sort/2
+.  .  .  user:uses_report/1
+.  .  .  .  user:called_by_report/1
+.  .  .  .  .  builtin: \= /2
+.  .  .  .  .  builtin:nl/0
+.  .  .  .  .  user:tab/1
+.  .  .  .  .  .  builtin:is/2
+.  .  .  .  .  .  user:tab/1  ***** looping *****
+.  .  .  .  .  .  user:tab_text/1
+.  .  .  .  .  .  builtin:write/1
+.  .  .  .  .  builtin:write/1
+.  .  .  .  .  user:write_list/2
+.  .  .  .  .  .  builtin:write/1
+.  .  .  .  .  .  user:write_list/2  ***** looping *****
+.  .  .  .  .  xrf:used_by/2
+.  .  .  .  user:modified_report/1
+.  .  .  .  .  builtin: \= /2
+.  .  .  .  .  builtin:nl/0
+.  .  .  .  .  user:tab/1
+.  .  .  .  .  .  builtin:is/2
+.  .  .  .  .  .  user:tab/1  ***** looping *****
+.  .  .  .  .  .  user:tab_text/1
+.  .  .  .  .  .  builtin:write/1
+.  .  .  .  .  builtin:write/1
+.  .  .  .  .  user:write_list/2
+.  .  .  .  .  .  builtin:write/1
+.  .  .  .  .  .  user:write_list/2  ***** looping *****
+.  .  .  .  .  xrf:dynamic_pred/1
+.  .  .  .  .  xrf:modified_in/2
+.  .  .  .  builtin:nl/0
+.  .  .  .  user:subgoal_report/1
+.  .  .  .  .  builtin: \= /2
+.  .  .  .  .  builtin:nl/0
+.  .  .  .  .  user:tab/1
+.  .  .  .  .  .  builtin:is/2
+.  .  .  .  .  .  user:tab/1  ***** looping *****
+.  .  .  .  .  .  user:tab_text/1
+.  .  .  .  .  .  builtin:write/1
+.  .  .  .  .  builtin:write/1
+.  .  .  .  .  user:write_list/2
+.  .  .  .  .  .  builtin:write/1
+.  .  .  .  .  .  user:write_list/2  ***** looping *****
+.  .  .  .  .  xrf:uses/2
+.  .  .  .  user:uses_report/1  ***** looping *****
+.  .  .  .  builtin:write/1
+.  .  .  .  xrf:dynamic_pred/1
+.  .  .  builtin:write/1
+.  .  user:warning_report/0
+.  .  .  builtin:findall/3
+.  .  .  builtin:nl/0
+.  .  .  builtin:sort/2
+.  .  .  builtin:write/1
+.  .  .  user:write_warnings/1
+.  .  .  .  builtin:nl/0
+.  .  .  .  user:write_list/2
+.  .  .  .  .  builtin:write/1
+.  .  .  .  .  user:write_list/2  ***** looping *****
+.  .  .  .  user:write_warnings/1  ***** looping *****
+.  xrf:xref/1
+.  .  xrf:get_modified_in/0
+.  .  .  builtin:findall/3
+.  .  .  xrf:insert_list/3
+.  .  .  .  xrf:insert/3
+.  .  .  .  .  builtin: @< /2
+.  .  .  .  .  xrf:insert/3  ***** looping *****
+.  .  .  .  xrf:insert_list/3  ***** looping *****
+.  .  .  xrf:uses/2
+.  .  .  assert-xrf:modified_in/2
+.  .  xrf:get_used_by/0
+.  .  .  builtin:findall/3
+.  .  .  xrf:insert_list/3
+.  .  .  .  xrf:insert/3
+.  .  .  .  .  builtin: @< /2
+.  .  .  .  .  xrf:insert/3  ***** looping *****
+.  .  .  .  xrf:insert_list/3  ***** looping *****
+.  .  .  xrf:uses/2
+.  .  .  assert-xrf:used_by/2
+.  .  xrf:resolve_uses/0
+.  .  .  xrf:resolve_dynamics/0
+.  .  .  .  xrf:dynamic_pred/1
+.  .  .  .  xrf:uses_temp/2
+.  .  .  .  assert-xrf:uses_temp/2
+.  .  .  .  assert-xrf:warning/2
+.  .  .  xrf:resolve_uses/3
+.  .  .  .  xrf:find_mod/3
+.  .  .  .  .  builtin:current_predicate/1
+.  .  .  .  .  builtin:functor/3
+.  .  .  .  .  xrf:import_mod/2
+.  .  .  .  .  xrf:import_pred/2
+.  .  .  .  .  builtin:predicate_property/2
+.  .  .  .  .  xrf:uses_temp/2
+.  .  .  .  .  xrf:visible/1
+.  .  .  .  .  .  builtin:current_predicate/1
+.  .  .  .  .  .  xrf:export_pred/2
+.  .  .  .  .  .  builtin:predicate_property/2
+.  .  .  .  .  .  xrf:uses_temp/2
+.  .  .  .  xrf:resolve_uses/3  ***** looping *****
+.  .  .  xrf:uses_temp/2
+.  .  .  assert-xrf:uses/2
+.  .  xrf:warn_undefined/0
+.  .  .  xrf:uses/2
+.  .  .  xrf:warn_undef/2
+.  .  .  .  xrf:warn_undef/2  ***** looping *****
+.  .  .  .  assert-xrf:warning/2
+.  .  xrf:warn_unused/0
+.  .  .  xrf:used_by/2
+.  .  .  assert-xrf:warning/2
+.  .  xrf:xinit/0
+.  .  .  builtin:retractall/1
+.  .  .  assert-xrf:open_module/1
+.  .  xrf:xinput/1
+.  .  .  builtin: == /2
+.  .  .  xrf:bad_term/2
+.  .  .  .  xrf:bad_body/2
+.  .  .  .  .  xrf:bad_body/2  ***** looping *****
+.  .  .  .  builtin:line_count/2
+.  .  .  .  builtin:stream_property/2
+.  .  .  .  assert-xrf:warning/2
+.  .  .  builtin:close/1
+.  .  .  xrf:file/2
+.  .  .  builtin:line_count/2
+.  .  .  builtin:open/3
+.  .  .  xrf:process/4
+.  .  .  .  xrf:add_discontiguous/2
+.  .  .  .  .  xrf:add_discontiguous/2  ***** looping *****
+.  .  .  .  .  assert-xrf:discontig_pred/1
+.  .  .  .  xrf:add_dynamic/2
+.  .  .  .  .  builtin: = /2
+.  .  .  .  .  builtin: == /2
+.  .  .  .  .  xrf:add_dynamic/2  ***** looping *****
+.  .  .  .  .  xrf:assert_dynamic/1
+.  .  .  .  .  .  xrf:dynamic_pred/1
+.  .  .  .  .  .  assert-xrf:dynamic_pred/1
+.  .  .  .  .  xrf:mod_functor/4
+.  .  .  .  .  .  builtin:functor/3
+.  .  .  .  xrf:add_export/2
+.  .  .  .  .  xrf:add_export/2  ***** looping *****
+.  .  .  .  .  assert-xrf:export_pred/2
+.  .  .  .  xrf:add_import/2
+.  .  .  .  .  xrf:add_import/2  ***** looping *****
+.  .  .  .  .  assert-xrf:import_mod/2
+.  .  .  .  .  assert-xrf:import_pred/2
+.  .  .  .  builtin:expand_term/2
+.  .  .  .  xrf:file/2
+.  .  .  .  builtin:functor/3
+.  .  .  .  xrf:get_uses/1
+.  .  .  .  .  xrf:discontig_check/1
+.  .  .  .  .  .  xrf:discontig_pred/1
+.  .  .  .  .  .  xrf:last_clause/1
+.  .  .  .  .  .  xrf:uses_temp/2
+.  .  .  .  .  .  assert-xrf:warning/2
+.  .  .  .  .  xrf:uses_temp/2
+.  .  .  .  .  assert-xrf:uses_temp/2
+.  .  .  .  xrf:get_uses/2
+.  .  .  .  .  builtin: = /2
+.  .  .  .  .  xrf:add_use/3
+.  .  .  .  .  .  builtin: = /2
+.  .  .  .  .  .  builtin: == /2
+.  .  .  .  .  .  xrf:add_dynamic/2
+.  .  .  .  .  .  .  builtin: = /2
+.  .  .  .  .  .  .  builtin: == /2
+.  .  .  .  .  .  .  xrf:add_dynamic/2  ***** looping *****
+.  .  .  .  .  .  .  xrf:assert_dynamic/1
+.  .  .  .  .  .  .  .  xrf:dynamic_pred/1
+.  .  .  .  .  .  .  .  assert-xrf:dynamic_pred/1
+.  .  .  .  .  .  .  xrf:mod_functor/4
+.  .  .  .  .  .  .  .  builtin:functor/3
+.  .  .  .  .  .  xrf:add_use/3  ***** looping *****
+.  .  .  .  .  .  xrf:insert/3
+.  .  .  .  .  .  .  builtin: @< /2
+.  .  .  .  .  .  .  xrf:insert/3  ***** looping *****
+.  .  .  .  .  .  xrf:is_assert/2
+.  .  .  .  .  .  builtin:memberchk/2
+.  .  .  .  .  .  xrf:mod_functor/4
+.  .  .  .  .  .  .  builtin:functor/3
+.  .  .  .  .  .  builtin:nonvar/1
+.  .  .  .  .  .  xrf:open_module/1
+.  .  .  .  .  .  builtin:var/1
+.  .  .  .  .  xrf:discontig_check/1
+.  .  .  .  .  .  xrf:discontig_pred/1
+.  .  .  .  .  .  xrf:last_clause/1
+.  .  .  .  .  .  xrf:uses_temp/2
+.  .  .  .  .  .  assert-xrf:warning/2
+.  .  .  .  .  assert-xrf:uses_temp/2
+.  .  .  .  .  retract-de_fault:uses_temp/2
+.  .  .  .  xrf:module_file/2
+.  .  .  .  builtin:op/3
+.  .  .  .  xrf:open_module/1
+.  .  .  .  xrf:pred_loc/4
+.  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  xrf:set_last_clause/1
+.  .  .  .  .  assert-xrf:last_clause/1
+.  .  .  .  .  retract-de_fault:last_clause/1
+.  .  .  .  xrf:set_open_module/1
+.  .  .  .  .  assert-xrf:open_module/1
+.  .  .  .  .  retract-de_fault:open_module/1
+.  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  .  undefined:xread/1
+.  .  .  .  assert-xrf:module_file/2
+.  .  .  .  assert-xrf:pred_loc/4
+.  .  .  builtin:read/2
+.  .  .  builtin:repeat/0
+.  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  assert-xrf:file/2
+
+----- Going Down   xrf:used_by2/2 ----------
+
+xrf:used_by2/2    uses:
+
+----- Going Down   xrf:uses2/2 ----------
+
+xrf:uses2/2    uses:
+
+----- Going Down   xrf:warning/2 ----------
+
+xrf:warning/2    uses:
+
+----- Coming Up   user:tab_text/1 ----------
+
+user:tab_text/1   modified in:
+.  user:set_tab/1
+.  .  user:main/0
+
+user:tab_text/1   used by:
+.  user:tab/1
+.  .  user:called_by_report/1
+.  .  .  user:uses_report/1
+.  .  .  .  user:uses_report/0
+.  .  .  .  .  user:xreport/0
+.  .  .  .  .  .  user:main/0
+.  .  .  .  user:uses_report/1  ***** looping *****
+.  .  user:cones_above/3
+.  .  .  user:cone_above/1
+.  .  .  .  user:bottoms_up/1
+.  .  .  .  .  user:bottoms_up/1  ***** looping *****
+.  .  .  .  .  user:main/0
+.  .  .  user:cones_above/3  ***** looping *****
+.  .  user:cones_below/3
+.  .  .  user:cone_below/1
+.  .  .  .  user:tops_down/1
+.  .  .  .  .  user:main/0
+.  .  .  .  .  user:tops_down/1  ***** looping *****
+.  .  .  user:cones_below/3  ***** looping *****
+.  .  user:modified_report/1
+.  .  .  user:uses_report/1
+.  .  .  .  user:uses_report/0
+.  .  .  .  .  user:xreport/0
+.  .  .  .  .  .  user:main/0
+.  .  .  .  user:uses_report/1  ***** looping *****
+.  .  user:subgoal_report/1
+.  .  .  user:uses_report/1
+.  .  .  .  user:uses_report/0
+.  .  .  .  .  user:xreport/0
+.  .  .  .  .  .  user:main/0
+.  .  .  .  user:uses_report/1  ***** looping *****
+.  .  user:tab/1  ***** looping *****
+
+----- Coming Up   xrf:used_by2/2 ----------
+
+xrf:used_by2/2   modified in:
+.  xrf:convert_used_by/0
+.  .  xrf:get_xlists/2
+
+xrf:used_by2/2   used by:
+
+----- Coming Up   xrf:uses2/2 ----------
+
+xrf:uses2/2   modified in:
+.  xrf:convert_uses/0
+.  .  xrf:get_xlists/2
+
+xrf:uses2/2   used by:
+
+----- Coming Up   xrf:modified_in/2 ----------
+
+xrf:modified_in/2   modified in:
+.  xrf:get_modified_in/0
+.  .  xrf:xref/1
+.  .  .  user:main/0
+
+xrf:modified_in/2   used by:
+.  user:cone_above/1
+.  .  user:bottoms_up/1
+.  .  .  user:bottoms_up/1  ***** looping *****
+.  .  .  user:main/0
+.  user:modified_report/1
+.  .  user:uses_report/1
+.  .  .  user:uses_report/0
+.  .  .  .  user:xreport/0
+.  .  .  .  .  user:main/0
+.  .  .  user:uses_report/1  ***** looping *****
+
+----- Coming Up   xrf:module_file/2 ----------
+
+xrf:module_file/2   modified in:
+.  xrf:process/4
+.  .  xrf:process/4  ***** looping *****
+.  .  xrf:xinput/1
+.  .  .  xrf:process/4  ***** looping *****
+.  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  xrf:xref/1
+.  .  .  .  user:main/0
+
+xrf:module_file/2   used by:
+.  xrf:process/4
+.  .  xrf:process/4  ***** looping *****
+.  .  xrf:xinput/1
+.  .  .  xrf:process/4  ***** looping *****
+.  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  xrf:xref/1
+.  .  .  .  user:main/0
+
+----- Coming Up   xrf:pred_loc/4 ----------
+
+xrf:pred_loc/4   modified in:
+.  xrf:process/4
+.  .  xrf:process/4  ***** looping *****
+.  .  xrf:xinput/1
+.  .  .  xrf:process/4  ***** looping *****
+.  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  xrf:xref/1
+.  .  .  .  user:main/0
+
+xrf:pred_loc/4   used by:
+.  xrf:get_pred_loc/4
+.  .  xrf:convert_mfa_list/2
+.  .  .  xrf:convert_mfa_list/2  ***** looping *****
+.  .  .  xrf:convert_used_by/0
+.  .  .  .  xrf:get_xlists/2
+.  .  .  xrf:convert_uses/0
+.  .  .  .  xrf:get_xlists/2
+.  xrf:process/4
+.  .  xrf:process/4  ***** looping *****
+.  .  xrf:xinput/1
+.  .  .  xrf:process/4  ***** looping *****
+.  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  xrf:xref/1
+.  .  .  .  user:main/0
+
+----- Coming Up   xrf:file/2 ----------
+
+xrf:file/2   modified in:
+.  xrf:xinput/1
+.  .  xrf:process/4
+.  .  .  xrf:process/4  ***** looping *****
+.  .  .  xrf:xinput/1  ***** looping *****
+.  .  xrf:xinput/1  ***** looping *****
+.  .  xrf:xref/1
+.  .  .  user:main/0
+
+xrf:file/2   used by:
+.  xrf:process/4
+.  .  xrf:process/4  ***** looping *****
+.  .  xrf:xinput/1
+.  .  .  xrf:process/4  ***** looping *****
+.  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  xrf:xref/1
+.  .  .  .  user:main/0
+.  xrf:xinput/1
+.  .  xrf:process/4
+.  .  .  xrf:process/4  ***** looping *****
+.  .  .  xrf:xinput/1  ***** looping *****
+.  .  xrf:xinput/1  ***** looping *****
+.  .  xrf:xref/1
+.  .  .  user:main/0
+
+----- Coming Up   xrf:last_clause/1 ----------
+
+xrf:last_clause/1   modified in:
+.  xrf:set_last_clause/1
+.  .  xrf:process/4
+.  .  .  xrf:process/4  ***** looping *****
+.  .  .  xrf:xinput/1
+.  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  .  xrf:xref/1
+.  .  .  .  .  user:main/0
+
+xrf:last_clause/1   used by:
+.  xrf:discontig_check/1
+.  .  xrf:get_uses/1
+.  .  .  xrf:process/4
+.  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  xrf:xinput/1
+.  .  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  .  .  xrf:xref/1
+.  .  .  .  .  .  user:main/0
+.  .  xrf:get_uses/2
+.  .  .  xrf:process/4
+.  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  xrf:xinput/1
+.  .  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  .  .  xrf:xref/1
+.  .  .  .  .  .  user:main/0
+
+----- Coming Up   xrf:discontig_pred/1 ----------
+
+xrf:discontig_pred/1   modified in:
+.  xrf:add_discontiguous/2
+.  .  xrf:add_discontiguous/2  ***** looping *****
+.  .  xrf:process/4
+.  .  .  xrf:process/4  ***** looping *****
+.  .  .  xrf:xinput/1
+.  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  .  xrf:xref/1
+.  .  .  .  .  user:main/0
+
+xrf:discontig_pred/1   used by:
+.  xrf:discontig_check/1
+.  .  xrf:get_uses/1
+.  .  .  xrf:process/4
+.  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  xrf:xinput/1
+.  .  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  .  .  xrf:xref/1
+.  .  .  .  .  .  user:main/0
+.  .  xrf:get_uses/2
+.  .  .  xrf:process/4
+.  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  xrf:xinput/1
+.  .  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  .  .  xrf:xref/1
+.  .  .  .  .  .  user:main/0
+
+----- Coming Up   xrf:warning/2 ----------
+
+xrf:warning/2   modified in:
+.  xrf:bad_term/2
+.  .  xrf:xinput/1
+.  .  .  xrf:process/4
+.  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  xrf:xref/1
+.  .  .  .  user:main/0
+.  xrf:discontig_check/1
+.  .  xrf:get_uses/1
+.  .  .  xrf:process/4
+.  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  xrf:xinput/1
+.  .  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  .  .  xrf:xref/1
+.  .  .  .  .  .  user:main/0
+.  .  xrf:get_uses/2
+.  .  .  xrf:process/4
+.  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  xrf:xinput/1
+.  .  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  .  .  xrf:xref/1
+.  .  .  .  .  .  user:main/0
+.  xrf:resolve_dynamics/0
+.  .  xrf:resolve_uses/0
+.  .  .  xrf:get_xlists/2
+.  .  .  xrf:xref/1
+.  .  .  .  user:main/0
+.  xrf:warn_undef/2
+.  .  xrf:warn_undef/2  ***** looping *****
+.  .  xrf:warn_undefined/0
+.  .  .  xrf:get_xlists/2
+.  .  .  xrf:xref/1
+.  .  .  .  user:main/0
+.  xrf:warn_unused/0
+.  .  xrf:get_xlists/2
+.  .  xrf:xref/1
+.  .  .  user:main/0
+
+xrf:warning/2   used by:
+
+----- Coming Up   xrf:open_module/1 ----------
+
+xrf:open_module/1   modified in:
+.  xrf:set_open_module/1
+.  .  xrf:process/4
+.  .  .  xrf:process/4  ***** looping *****
+.  .  .  xrf:xinput/1
+.  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  .  xrf:xref/1
+.  .  .  .  .  user:main/0
+.  xrf:xinit/0
+.  .  xrf:xref/1
+.  .  .  user:main/0
+
+xrf:open_module/1   used by:
+.  xrf:add_use/3
+.  .  xrf:add_use/3  ***** looping *****
+.  .  xrf:get_uses/2
+.  .  .  xrf:process/4
+.  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  xrf:xinput/1
+.  .  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  .  .  xrf:xref/1
+.  .  .  .  .  .  user:main/0
+.  xrf:process/4
+.  .  xrf:process/4  ***** looping *****
+.  .  xrf:xinput/1
+.  .  .  xrf:process/4  ***** looping *****
+.  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  xrf:xref/1
+.  .  .  .  user:main/0
+
+----- Coming Up   xrf:used_by/2 ----------
+
+xrf:used_by/2   modified in:
+.  xrf:get_used_by/0
+.  .  xrf:get_xlists/2
+.  .  xrf:xref/1
+.  .  .  user:main/0
+
+xrf:used_by/2   used by:
+.  user:called_by_report/1
+.  .  user:uses_report/1
+.  .  .  user:uses_report/0
+.  .  .  .  user:xreport/0
+.  .  .  .  .  user:main/0
+.  .  .  user:uses_report/1  ***** looping *****
+.  user:cone_above/1
+.  .  user:bottoms_up/1
+.  .  .  user:bottoms_up/1  ***** looping *****
+.  .  .  user:main/0
+.  user:cones_above/3
+.  .  user:cone_above/1
+.  .  .  user:bottoms_up/1
+.  .  .  .  user:bottoms_up/1  ***** looping *****
+.  .  .  .  user:main/0
+.  .  user:cones_above/3  ***** looping *****
+.  xrf:warn_unused/0
+.  .  xrf:get_xlists/2
+.  .  xrf:xref/1
+.  .  .  user:main/0
+
+----- Coming Up   xrf:dynamic_pred/1 ----------
+
+xrf:dynamic_pred/1   modified in:
+.  xrf:assert_dynamic/1
+.  .  xrf:add_dynamic/2
+.  .  .  xrf:add_dynamic/2  ***** looping *****
+.  .  .  xrf:add_use/3
+.  .  .  .  xrf:add_use/3  ***** looping *****
+.  .  .  .  xrf:get_uses/2
+.  .  .  .  .  xrf:process/4
+.  .  .  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  .  .  xrf:xinput/1
+.  .  .  .  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  .  .  .  .  xrf:xref/1
+.  .  .  .  .  .  .  .  user:main/0
+.  .  .  xrf:process/4
+.  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  xrf:xinput/1
+.  .  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  .  .  xrf:xref/1
+.  .  .  .  .  .  user:main/0
+
+xrf:dynamic_pred/1   used by:
+.  user:modified_report/1
+.  .  user:uses_report/1
+.  .  .  user:uses_report/0
+.  .  .  .  user:xreport/0
+.  .  .  .  .  user:main/0
+.  .  .  user:uses_report/1  ***** looping *****
+.  user:uses_report/1
+.  .  user:uses_report/0
+.  .  .  user:xreport/0
+.  .  .  .  user:main/0
+.  .  user:uses_report/1  ***** looping *****
+.  xrf:assert_dynamic/1
+.  .  xrf:add_dynamic/2
+.  .  .  xrf:add_dynamic/2  ***** looping *****
+.  .  .  xrf:add_use/3
+.  .  .  .  xrf:add_use/3  ***** looping *****
+.  .  .  .  xrf:get_uses/2
+.  .  .  .  .  xrf:process/4
+.  .  .  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  .  .  xrf:xinput/1
+.  .  .  .  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  .  .  .  .  xrf:xref/1
+.  .  .  .  .  .  .  .  user:main/0
+.  .  .  xrf:process/4
+.  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  xrf:xinput/1
+.  .  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  .  .  xrf:xref/1
+.  .  .  .  .  .  user:main/0
+.  xrf:resolve_dynamics/0
+.  .  xrf:resolve_uses/0
+.  .  .  xrf:get_xlists/2
+.  .  .  xrf:xref/1
+.  .  .  .  user:main/0
+
+----- Coming Up   xrf:export_pred/2 ----------
+
+xrf:export_pred/2   modified in:
+.  xrf:add_export/2
+.  .  xrf:add_export/2  ***** looping *****
+.  .  xrf:process/4
+.  .  .  xrf:process/4  ***** looping *****
+.  .  .  xrf:xinput/1
+.  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  .  xrf:xref/1
+.  .  .  .  .  user:main/0
+
+xrf:export_pred/2   used by:
+.  xrf:visible/1
+.  .  xrf:find_mod/3
+.  .  .  xrf:resolve_uses/3
+.  .  .  .  xrf:resolve_uses/0
+.  .  .  .  .  xrf:get_xlists/2
+.  .  .  .  .  xrf:xref/1
+.  .  .  .  .  .  user:main/0
+.  .  .  .  xrf:resolve_uses/3  ***** looping *****
+
+----- Coming Up   xrf:import_pred/2 ----------
+
+xrf:import_pred/2   modified in:
+.  xrf:add_import/2
+.  .  xrf:add_import/2  ***** looping *****
+.  .  xrf:process/4
+.  .  .  xrf:process/4  ***** looping *****
+.  .  .  xrf:xinput/1
+.  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  .  xrf:xref/1
+.  .  .  .  .  user:main/0
+
+xrf:import_pred/2   used by:
+.  xrf:find_mod/3
+.  .  xrf:resolve_uses/3
+.  .  .  xrf:resolve_uses/0
+.  .  .  .  xrf:get_xlists/2
+.  .  .  .  xrf:xref/1
+.  .  .  .  .  user:main/0
+.  .  .  xrf:resolve_uses/3  ***** looping *****
+
+----- Coming Up   xrf:import_mod/2 ----------
+
+xrf:import_mod/2   modified in:
+.  xrf:add_import/2
+.  .  xrf:add_import/2  ***** looping *****
+.  .  xrf:process/4
+.  .  .  xrf:process/4  ***** looping *****
+.  .  .  xrf:xinput/1
+.  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  .  xrf:xref/1
+.  .  .  .  .  user:main/0
+
+xrf:import_mod/2   used by:
+.  xrf:find_mod/3
+.  .  xrf:resolve_uses/3
+.  .  .  xrf:resolve_uses/0
+.  .  .  .  xrf:get_xlists/2
+.  .  .  .  xrf:xref/1
+.  .  .  .  .  user:main/0
+.  .  .  xrf:resolve_uses/3  ***** looping *****
+
+----- Coming Up   xrf:uses/2 ----------
+
+xrf:uses/2   modified in:
+.  xrf:resolve_uses/0
+.  .  xrf:get_xlists/2
+.  .  xrf:xref/1
+.  .  .  user:main/0
+
+xrf:uses/2   used by:
+.  user:cone_below/1
+.  .  user:tops_down/1
+.  .  .  user:main/0
+.  .  .  user:tops_down/1  ***** looping *****
+.  user:cones_below/3
+.  .  user:cone_below/1
+.  .  .  user:tops_down/1
+.  .  .  .  user:main/0
+.  .  .  .  user:tops_down/1  ***** looping *****
+.  .  user:cones_below/3  ***** looping *****
+.  user:subgoal_report/1
+.  .  user:uses_report/1
+.  .  .  user:uses_report/0
+.  .  .  .  user:xreport/0
+.  .  .  .  .  user:main/0
+.  .  .  user:uses_report/1  ***** looping *****
+.  xrf:get_modified_in/0
+.  .  xrf:xref/1
+.  .  .  user:main/0
+.  xrf:get_used_by/0
+.  .  xrf:get_xlists/2
+.  .  xrf:xref/1
+.  .  .  user:main/0
+.  xrf:warn_undefined/0
+.  .  xrf:get_xlists/2
+.  .  xrf:xref/1
+.  .  .  user:main/0
+
+----- Coming Up   xrf:uses_temp/2 ----------
+
+xrf:uses_temp/2   modified in:
+.  xrf:get_uses/1
+.  .  xrf:process/4
+.  .  .  xrf:process/4  ***** looping *****
+.  .  .  xrf:xinput/1
+.  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  .  xrf:xref/1
+.  .  .  .  .  user:main/0
+.  xrf:get_uses/2
+.  .  xrf:process/4
+.  .  .  xrf:process/4  ***** looping *****
+.  .  .  xrf:xinput/1
+.  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  .  xrf:xref/1
+.  .  .  .  .  user:main/0
+.  xrf:resolve_dynamics/0
+.  .  xrf:resolve_uses/0
+.  .  .  xrf:get_xlists/2
+.  .  .  xrf:xref/1
+.  .  .  .  user:main/0
+
+xrf:uses_temp/2   used by:
+.  xrf:discontig_check/1
+.  .  xrf:get_uses/1
+.  .  .  xrf:process/4
+.  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  xrf:xinput/1
+.  .  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  .  .  xrf:xref/1
+.  .  .  .  .  .  user:main/0
+.  .  xrf:get_uses/2
+.  .  .  xrf:process/4
+.  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  xrf:xinput/1
+.  .  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  .  .  xrf:xref/1
+.  .  .  .  .  .  user:main/0
+.  xrf:find_mod/3
+.  .  xrf:resolve_uses/3
+.  .  .  xrf:resolve_uses/0
+.  .  .  .  xrf:get_xlists/2
+.  .  .  .  xrf:xref/1
+.  .  .  .  .  user:main/0
+.  .  .  xrf:resolve_uses/3  ***** looping *****
+.  xrf:get_uses/1
+.  .  xrf:process/4
+.  .  .  xrf:process/4  ***** looping *****
+.  .  .  xrf:xinput/1
+.  .  .  .  xrf:process/4  ***** looping *****
+.  .  .  .  xrf:xinput/1  ***** looping *****
+.  .  .  .  xrf:xref/1
+.  .  .  .  .  user:main/0
+.  xrf:resolve_dynamics/0
+.  .  xrf:resolve_uses/0
+.  .  .  xrf:get_xlists/2
+.  .  .  xrf:xref/1
+.  .  .  .  user:main/0
+.  xrf:resolve_uses/0
+.  .  xrf:get_xlists/2
+.  .  xrf:xref/1
+.  .  .  user:main/0
+.  xrf:visible/1
+.  .  xrf:find_mod/3
+.  .  .  xrf:resolve_uses/3
+.  .  .  .  xrf:resolve_uses/0
+.  .  .  .  .  xrf:get_xlists/2
+.  .  .  .  .  xrf:xref/1
+.  .  .  .  .  .  user:main/0
+.  .  .  .  xrf:resolve_uses/3  ***** looping *****
