@@ -80,12 +80,18 @@
 
 % To allow running from command line compiled code
 % version.
+:- op(900, fy, ?).
 
 % SICStus modules
 :- module(xrf, [
     xref/1,
-    xref/3]).
+    '?'/1]).
+
+:- meta_predicate ?(:).
+
 :- use_module(library(file_systems)).
+:- use_module(library(lists)).
+
 
 :- dynamic
    uses_temp/2,
@@ -112,11 +118,6 @@ xref(FILES) :-
    warn_unused,
    warn_undefined.
 
-xref(FILES, WARNINGS, USES) :-
-   xinit,
-   xinput(FILES),
-   get_xlists(WARNINGS, USES).
-
 xinit :-
    retractall(uses_temp(_,_)),
    retractall(uses(_,_)),
@@ -140,31 +141,59 @@ xinit :-
 
 xinput([]) :- !.
 xinput([FILE|FILES]) :-
-   file(FILE,_),
-   !,
-   xinput(FILES).
-xinput([FILE|FILES]) :-
    xinput(FILE),
    !,
    xinput(FILES).
 
-xinput(FILE) :-
-%   fopen(H, FILE, r),
+xinput(FIL) :-
+   add_extension(FIL, FILE),
+   \+ file(FILE,_),
+  write('reading file: '), write(FIL), nl,
    open(FILE, read, H),
+   path_dir(FILE, DIR),
+   current_directory(DSTART, DIR),
+  write('set directory: '), write(DIR), nl,
    asserta(file(FILE, H)),
    repeat,
-%   stream_property(H, line_number(LINE)),
    line_count(H, LINE),
    read(H,X),
-%   stream_property(H, line_number(LINE2)),
    line_count(H, LINE2),
+%  write(X),nl,
    (bad_term(H, X) ->
       true
       ;
       process(FILE, LINE, LINE2, X) ),
    X == end_of_file,
    !,
-   close(H).
+   close(H),
+   current_directory(_, DSTART),
+  write('done with file: '), write(FILE), nl.
+xinput(_).
+
+path_dir(FILE, DIR) :-
+   absolute_file_name(FILE, FULLPATH),
+   atom_chars(FULLPATH, FULLCODES),
+   reverse(FULLCODES, BACKWARDSCODES),
+   extract_dir(BACKWARDSCODES, BACKWARDSDIR),
+   reverse(BACKWARDSDIR, DIRCODES),
+   atom_chars(DIR, DIRCODES),
+   !.
+
+extract_dir(['/'|Dir], ['/'|Dir]) :- !.
+extract_dir([X|Xs], Dir) :-
+   !, extract_dir(Xs, Dir).
+
+add_extension(FIL, FILE) :-
+   atom_chars(FIL, FILCODES),
+   reverse(FILCODES, RFILCODES),
+   add_ext(RFILCODES, RFILECODES),
+   reverse(RFILECODES, FILECODES),
+   atom_chars(FILE, FILECODES),
+   !.
+
+add_ext([A,B,C,'.'|Xs], [A,B,C,'.'|Xs]).
+add_ext([A,B,'.'|Xs], [A,B,'.'|Xs]).
+add_ext(Xs, [o,r,p,'.'|Xs]).
 
 process(FILE, LINE, LINE2,  end_of_file ) :- !.
 process(FILE, LINE, LINE2,  (A --> B) ) :-
@@ -184,6 +213,11 @@ process(FILE, LINE, LINE2,  (:- module(M, IM)) ) :-
 %   !, set_open_module(user).
 %process(FILE, LINE, LINE2,  (:- end_body(_)) ) :-
 %   !, set_open_module(user).
+
+process(FILE, LINE, LINE2, (:- use_module(library(IM))) ) :-
+   !,
+   open_module(M),
+   add_import(M, library(IM)).
 process(FILE, LINE, LINE2,  (:- use_module(MF)) ) :-
    !,
    open_module(M),
@@ -217,7 +251,9 @@ process(FILE, LINE, LINE2,  (:- op(P, A, O)) ) :-
 process(FILE, LINE, LINE2,  (:- include(F)) ) :-
    !,
    (file(F, _) -> true
-   ; xread(F) ).
+   ; xinput(F) ).
+process(FILE, LINE, LINE2, (:- meta_predicate(_)) ) :-
+   !.
 process(FILE, LINE, LINE2,  (H :- B) ) :-
    !,
    functor(H, F, A),
@@ -311,12 +347,19 @@ add_dynamic(_, []) :- !.
 add_dynamic(M, [P|Z]) :-
    add_dynamic(M, P),
    !, add_dynamic(M, Z).
+% note - SICStus stores the dynamic list as (a,b,c..) not [a,b,c...]
+add_dynamic(M, (A,B)) :-
+   !,
+   add_dynamic(M, A),
+   add_dynamic(M, B).
+
 add_dynamic(M, F/A) :-
    !,
    assert_dynamic(M:F/A).
 add_dynamic(M, X) :-
    mod_functor(X, MM, F, A),
    (MM == de_fault -> M3 = M; M3 = MM),
+   !,
    assert_dynamic(M3:F/A).
 
 assert_dynamic(M:F/A) :-
@@ -378,6 +421,9 @@ set_last_clause(MFA) :-
    !,
    assert(last_clause(MFA)).
 
+%add_use(X, L, L) :-
+%  write(add_use(X)), nl,
+%  fail.
 add_use(X, L, L) :-
    var(X), !.
 add_use( (G,Gs), L, L3 ) :-
@@ -387,50 +433,59 @@ add_use( (G;Gs), L, L3 ) :-
    add_use(G, L, L2),
    !, add_use(Gs, L2, L3).
 add_use( (G->Gs), L, L3 ) :-
-   add_use(G, L, L2),
+   (ok_goal(G) -> add_use(G, L, L2); L = L2),
    !,
    add_use(Gs, L2, L3).
 add_use( not(G), L, L2 ) :-
+   ok_goal(G),
    !, add_use(G, L, L2).
 add_use( call(G), L, L2 ) :-
+   ok_goal(G),
    !, add_use(G, L, L2).
 add_use( once(G), L, L2 ) :-
+   ok_goal(G),
    !, add_use(G, L, L2).
 add_use( catch(G,_,R), L, L3) :-
    add_use(G, L, L2),
    add_use(R, L2, L3),
    !.
+add_use( MAPLIST, L, L2) :-
+   MAPLIST =.. [maplist, G | _],
+   !, add_use(G, L, L2).
 add_use( ASSERT, L, L3 ) :-
    is_assert(ASSERT, G),
+   ok_goal(G),
    !,
-   (nonvar(G) ->
-      mod_functor(G, MG, FG, AG),
-      (MG == de_fault -> open_module(MMG); MMG = MG),
-      add_dynamic(MMG, G),
-      insert(assert-MG:FG/AG, L, L3)
-      ;
-      mod_functor(ASSERT, M, F, A),
-      insert(M:F/A, L, L3)
-   ),
-   !.
+   mod_functor(G, MG, FG, AG),
+   (MG == de_fault -> open_module(MMG); MMG = MG),
+   add_dynamic(MMG, G),
+   insert(assert-MMG:FG/AG, L, L3).
 add_use(retract(G), L, L3) :-
-   (nonvar(G) ->
-      mod_functor(G, MG, FG, AG),
-      (MG == de_fault -> open_module(MMG); MMG = MG),
-      add_dynamic(MMG, G),
-      insert(retract-MG:FG/AG, L, L3)
-      ;
-      mod_functor(retract(G), M, F, A),
-      insert(M:F/A, L, L3)
-   ),
-   !.
+   ok_goal(G),
+   !,
+   mod_functor(G, MG, FG, AG),
+   (MG == de_fault -> open_module(MMG); MMG = MG),
+   add_dynamic(MMG, G),
+   insert(retract-MG:FG/AG, L, L3).
 add_use( IG, L, L ) :-
    memberchk(IG, [!, true, fail]),
    !.
 add_use( !, L, L ) :- !.
 add_use( G, L, L2 ) :-
+   ok_goal(G),
    mod_functor(G, M, F, A),
    insert(M:F/A, L, L2).
+
+ok_goal(G) :- var(G), !, fail.
+ok_goal(A:B) :- (var(A);var(B)), !, fail.
+ok_goal(G) :-
+   catch( functor(G, _, _), X, bad_goal(X,G) ).
+
+
+bad_goal(X,G) :-
+   write('*** Bad Goal: '), nl,
+   write(X), nl,
+   writeq(G), nl, abort.
    
 is_assert(assert(G), G).
 is_assert(asserta(G), G).
@@ -484,6 +539,10 @@ find_mod(F/A, M, M2) :-
 find_mod(F/A, M, M2) :-
    import_pred(M, M2:F/A),
    visible(M2:F/A),
+   !.
+find_mod(F/A, M, M2) :-
+   functor(T, F, A),
+   predicate_property(T, imported_from(M2)),
    !.
 find_mod(F/A, M, user) :-
    uses_temp(user:F/A, _),
@@ -621,5 +680,11 @@ insert(A, [B|Z], [A,B|Z]) :-
    !.
 insert(B, [A|Y], [A|Z]) :-
    insert(B,Y,Z).
+
+? X :-
+    (nl, writeq('CALL':X), nl ; nl, writeq('FAIL':X), nl, fail),
+    call(X),
+    (nl, writeq('EXIT':X), nl ; nl, writeq('REDO':X), nl, fail).
+
 
 % :- end_module(axrf).

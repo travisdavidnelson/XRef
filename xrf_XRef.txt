@@ -1,0 +1,135 @@
+
+----- Warnings -----
+Unused predicate: user:here/1
+Unused predicate: user:main/0
+Unused predicate: xrf:(?)/1
+Unused predicate: xrf:get_xlists/2
+Unused predicate: xrf:used_by2/2
+Unused predicate: xrf:uses2/2
+Unused predicate: xrf:warning/2
+
+----- Predicate Use -----
+user:bottoms/1    xrfSicstusMain.pro:108:111
+   subgoals:
+      builtin:findall/3
+   called from:  
+      user:cross_reference/3
+user:bottoms_up/1    xrfSicstusMain.pro:121:123
+   subgoals:
+      user:bottoms_up/1
+      user:cone_above/1
+      builtin:nl/0
+      builtin:write/1
+   called from:  
+      user:bottoms_up/1
+      user:cross_reference/3
+user:called_by_report/1    xrfSicstusMain.pro:83:94
+   subgoals:
+      builtin: \= /2
+      builtin:nl/0
+      user:tab/1
+      builtin:write/1
+      user:write_list/2
+      xrf:used_by/2
+   called from:  
+      user:uses_report/1
+user:cone_above/1    xrfSicstusMain.pro:156:166
+   subgoals:
+      user:cones_above/3
+      builtin:nl/0
+      builtin:write/1
+      xrf:modified_in/2
+      xrf:used_by/2
+   called from:  
+      user:bottoms_up/1
+user:cone_below/1    xrfSicstusMain.pro:131:137
+   subgoals:
+      user:cones_below/3
+      builtin:nl/0
+      builtin:write/1
+      xrf:uses/2
+   called from:  
+      user:tops_down/1
+user:cones_above/3    xrfSicstusMain.pro:166:169
+   subgoals:
+      user:cones_above/3
+      builtin:is/2
+      builtin:memberchk/2
+      builtin:nl/0
+      user:tab/1
+      builtin:write/1
+      xrf:used_by/2
+   called from:  
+      user:cone_above/1
+      user:cones_above/3
+user:cones_below/3    xrfSicstusMain.pro:137:139
+   subgoals:
+      user:cones_below/3
+      builtin:is/2
+      builtin:memberchk/2
+      builtin:nl/0
+      user:tab/1
+      builtin:write/1
+      xrf:uses/2
+   called from:  
+      user:cone_below/1
+      user:cones_below/3
+user:cross_reference/3    xrfSicstusMain.pro:24:37
+   subgoals:
+      user:bottoms/1
+      user:bottoms_up/1
+      file_systems:current_directory/2
+      user:set_tab/1
+      builtin:tell/1
+      builtin:told/0
+      user:tops/1
+      user:tops_down/1
+      user:xreport/0
+      xrf:xref/1
+   called from:  
+      user:main/0
+user:here/1    xrfSicstusMain.pro:5:7
+   no subgoals
+   no callers
+user:io/4    xrfSicstusMain.pro:7:12
+   no subgoals
+   called from:  
+      user:main/0
+user:main/0    xrfSicstusMain.pro:20:24
+   subgoals:
+      user:cross_reference/3
+      user:io/4
+   no callers
+user:modified_report/1    xrfSicstusMain.pro:58:71
+   subgoals:
+      builtin: \= /2
+      builtin:nl/0
+      user:tab/1
+      builtin:write/1
+      user:write_list/2
+      xrf:dynamic_pred/1
+      xrf:modified_in/2
+   called from:  
+      user:uses_report/1
+user:set_tab/1    xrfSicstusMain.pro:101:105
+   subgoals:
+      builtin:retractall/1
+      assert-user:tab_text/1
+   called from:  
+      user:cross_reference/3
+user:subgoal_report/1    xrfSicstusMain.pro:72:83
+   subgoals:
+      builtin: \= /2
+      builtin:nl/0
+      user:tab/1
+      builtin:write/1
+      user:write_list/2
+      xrf:uses/2
+   called from:  
+      user:uses_report/1
+user:tab/1    xrfSicstusMain.pro:94:96
+   subgoals:
+      builtin:is/2
+      user:tab/1
+      user:tab_text/1
+      builtin:

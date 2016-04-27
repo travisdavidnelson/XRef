@@ -7,22 +7,37 @@
 
 here('/Users/tnelson/dev/solstice/XRef/').
 
+io(xrf,
+    '/Users/dmerritt/dev/solstice/XRef/',
+    ['xrfSicstusMain.pro'],
+    'xrf_XRef.txt').
+io(duckworld,
+    '/Users/dmerritt/dev/solstice/XRef/',
+    ['dwMain.pro'],
+    'xrf_DuckWorld.txt').
+io(sessionManager,
+    '/Users/dmerritt/dev/solstice/Solstice/src/prolog/Session/',
+    ['sessionManager.pro'],
+    '/Users/dmerritt/dev/solstice/XRef/xrf_SessionManager.txt').
+
 main :-
-   here(HERE),
-   current_directory(_, HERE),
+   io(sessionManager, DIR, FILES, OUT),
+   cross_reference(DIR, FILES, OUT).
+   
+cross_reference(DIR, FILES, OUT) :-
+   current_directory(_, DIR),
    set_tab('   '),
-   xrf:xref(['dw_main.pro']),
-%   xrf:xref(['xrfSicstusMain.pro', 'xrfSicstus.pro']),
-%   tell('output_duckworld.txt'),
+   xrf:xref(FILES),
+   tell(OUT),
    xreport,
-%   told,
-   set_tab('.  '),
-   cone_below(user:main/0),
-   cone_above(data:loc/2).
-
-main :-
-   nl, write('nope'), nl.
-
+   set_tab('>  '),
+   tops(TOPS),
+   tops_down(TOPS),
+   set_tab('<  '),
+   bottoms(BOTTOMS),
+   bottoms_up(BOTTOMS),
+   told,
+   true.
 
 xreport :-
    warning_report,
@@ -38,6 +53,8 @@ uses_report([]).
 uses_report([M:F/A|Z]) :-
       write(M:F/A),
       (xrf:dynamic_pred(M:F/A) -> write('   '), write(dynamic); true),
+      (xrf:pred_loc(M:F/A, FILE, LINE, LINE2) ->
+           write('    '), write(FILE:LINE:LINE2); true),
       nl,
       modified_report(M:F/A),
       subgoal_report(M:F/A),
@@ -91,6 +108,32 @@ set_tab(T) :-
         retractall(tab_text(_)),
         assert(tab_text(T)).
 
+tops(TOPS) :-
+     findall(M:F/A, xrf:used_by(M:F/A, []), TOPS).
+
+bottoms(BOTTOMS) :-
+     findall(M:F/A, xrf:dynamic_pred(M:F/A), BOTTOMS).
+
+tops_down([]).
+tops_down([M:F/A | MFAs]) :-
+     nl,
+     write('----- Going Down   '),
+     write(M:F/A),
+     write(' ----------'),
+     nl,
+     cone_below(M:F/A),
+     !, tops_down(MFAs).
+
+bottoms_up([]).
+bottoms_up([M:F/A | MFAs]) :-
+     nl,
+     write('----- Coming Up   '),
+     write(M:F/A),
+     write(' ----------'),
+     nl,
+     cone_above(M:F/A),
+     !, bottoms_up(MFAs).
+
 cone_below(M:F/A) :-
      nl,
      write(M:F/A), write('    '), write('uses:'), nl,
@@ -118,7 +161,7 @@ cones_below([_ | MFAs], I, Visited) :-
 
 cone_above(M:F/A) :-
      nl,
-     write(M:F/A), write('   '), write('modified in:'), nl,
+     write(M:F/A), write('   '), write('modified in and callers upstream:'), nl,
      xrf:modified_in(M:F/A, L),
      cones_above(L, 1, [M:F/A]),
      nl,
