@@ -6,6 +6,16 @@
 
 \f0\fs24 \cf0 Design Notes & Status\
 \
+2016-04-27\
+\
+It now runs, whether or not correctly to be determined, on large numbers of Solstice files.  It can be started with a single file, and then it automatically tracks all the use_module and include directives to take into account everyone.\
+\
+See dw_main.pro to see how it was started.\
+\
+See xrf_SessionManager.txt to see a large amount of output.  It has the complete cross reference, and then the cones down from everything that is an orphan at the top, and the cones up from all the dynamic predicates.  Plus tons of warnings, not sure if they\'92re right or not.\
+\
+Because it is tracking the file structure, it would be nice to add a report on which files call which as well, and maybe I\'92ll add that tomorrow.\
+\
 2016-04-25\
 \
 The cross reference is now running under SICStus, with knowledge of SICStus modules and dynamic predicates.\
@@ -112,10 +122,12 @@ Dynamic predicates have places where they\'92re modified, and places where they\
 .  .  .  .  .  user:go/0  ***** looping *****\
 .  .  .  .  .  user:main/0\
 \
+\pard\pardeftab720
 
-\f0\fs24 \
+\f0\fs24 \cf0 \
+\pard\pardeftab720
 
-\f1\fs22 data:loc/2   used by:\
+\f1\fs22 \cf0 data:loc/2   used by:\
 .  rules:chase/1\
 .  .  rules:do/1\
 .  .  .  user:go/0\
