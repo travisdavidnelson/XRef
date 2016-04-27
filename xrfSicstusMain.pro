@@ -5,7 +5,7 @@
 
 :- dynamic tab_text/1.
 
-here('/Users/dmerritt/dev/solstice/XRef/').
+here('/Users/tnelson/dev/solstice/XRef/').
 
 main :-
    here(HERE),
