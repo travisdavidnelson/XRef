@@ -24,10 +24,13 @@ main :-
    
 cross_reference(DIR, FILES, OUT) :-
    current_directory(_, DIR),
-   set_tab('   '),
    xrf:xref(FILES),
    tell(OUT),
+   set_tab('>  '),
+   filereport,
+   set_tab('   '),
    xreport,
+   write('*** done with xreport ***'), nl,
    set_tab('>  '),
    tops(TOPS),
    tops_down(TOPS),
@@ -37,6 +40,21 @@ cross_reference(DIR, FILES, OUT) :-
    told,
    true.
 
+filereport :-
+   write('--------- Files that load other files ----------'), nl,
+   filereport(top, 0, []).
+
+filereport(F, I, Used) :-
+   (memberchk(F, Used) -> tab(I), write(F), write('*** circular ***'), nl, fail; true),
+   tab(I),
+   write(F), nl,
+   xrf:file_loads(F, F2),
+   II is I + 1,
+   filereport(F2, II, [F|Used]),
+   fail.
+filereport(_, _, _).
+   
+
 xreport :-
    warning_report,
    uses_report.
@@ -45,19 +63,28 @@ uses_report :-
    nl, write('----- Predicate Use -----'), nl,
    findall(MFA, xrf:uses(MFA,_), L),
    sort(L, SL),
-   uses_report(SL).
+   uses_report(SL, bogus_file_qz).
 
-uses_report([]).
-uses_report([M:F/A|Z]) :-
-      write(M:F/A),
+uses_report([], _).
+uses_report([M:F/A|Z], LASTFILE) :-
+      (xrf:module_file(M, FILE) -> true; FILE = user),
+      (FILE \= LASTFILE -> nl, write(FILE), nl; true),
+      nl, write(M:F/A),
       (xrf:dynamic_pred(M:F/A) -> write('   '), write(dynamic); true),
       (xrf:pred_loc(M:F/A, FILE, LINE, LINE2) ->
-           write('    '), write(FILE:LINE:LINE2); true),
+         xrf:file(FILE, NAME, _),
+         write('   '), write(NAME:LINE:LINE2)
+         ;
+         true),
       nl,
       modified_report(M:F/A),
       subgoal_report(M:F/A),
       called_by_report(M:F/A),
-      !, uses_report(Z).
+      !, uses_report(Z, FILE).
+uses_report([M:F/A|Z], LASTFILE) :-
+      write('****** uses_report ERROR ******'), nl,
+      write(M:F/A), nl,
+      !, uses_report(Z, LASTFILE).
 
 modified_report(M:F/A) :-
       xrf:dynamic_pred(M:F/A),
@@ -119,6 +146,10 @@ tops_down([M:F/A | MFAs]) :-
      write(M:F/A),
      write(' ----------'),
      nl,
+     xrf:pred_loc(M:F/A, FILE, LINE, LINE2),
+     xrf:file(FILE, NAME, DIR),
+     write(FILE), nl,
+     write(NAME), write('   '), write(LINE:LINE2), nl,
      cone_below(M:F/A),
      !, tops_down(MFAs).
 
@@ -129,6 +160,11 @@ bottoms_up([M:F/A | MFAs]) :-
      write(M:F/A),
      write(' ----------'),
      nl,
+     xrf:pred_loc(M:F/A, FILE, LINE, LINE2),
+     xrf:file(FILE, NAME, DIR),
+     write(FILE), nl,
+     write(NAME), nl,
+
      cone_above(M:F/A),
      !, bottoms_up(MFAs).
 

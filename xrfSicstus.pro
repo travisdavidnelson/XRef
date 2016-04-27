@@ -92,7 +92,6 @@
 :- use_module(library(file_systems)).
 :- use_module(library(lists)).
 
-
 :- dynamic
    uses_temp/2,
    uses/2,
@@ -105,7 +104,7 @@
    warning/2,
    discontig_pred/1,
    last_clause/1,
-   file/2,
+   file/3,
    pred_loc/4.
 
 
@@ -113,6 +112,7 @@ xref(FILES) :-
    xinit,
    xinput(FILES),
    resolve_uses,
+   locate_dynamics,
    get_used_by,
    get_modified_in,
    warn_unused,
@@ -130,10 +130,11 @@ xinit :-
    retractall(warning(_,_)),
    retractall(discontig_pred(_)),
    retractall(last_clause(_)),
-%   abolish(file/2),
-   retractall(file(_,_)),
+   retractall(file(_,_,_)),
    retractall(pred_loc(_,_,_,_)),
-   assert(open_module(user)).
+   assert(open_module(user)),
+   assert(file(unknown, unknown, unknown)),
+   assert(current_file(top)).
 
 %-----------------------------------
 % Read the files
@@ -141,19 +142,25 @@ xinit :-
 
 xinput([]) :- !.
 xinput([FILE|FILES]) :-
+   set_current_file(_, top),
    xinput(FILE),
    !,
    xinput(FILES).
 
 xinput(FIL) :-
+   open_module(MSTART),
    add_extension(FIL, FILE),
-   \+ file(FILE,_),
-  write('reading file: '), write(FIL), nl,
-   open(FILE, read, H),
-   path_dir(FILE, DIR),
+   path_dir(FILE, FULLPATH, NAME, DIR),
+   current_file(CF),
+   assert(file_loads(CF, FULLPATH)),
+   \+ file(FULLPATH, _, _),
+   set_current_file(OLDFILE, FULLPATH),
+  write('reading file: '), write(FIL),
+  write('  '), write(NAME), write('  '), write(DIR), nl,
+   open(FULLPATH, read, H),
    current_directory(DSTART, DIR),
-  write('set directory: '), write(DIR), nl,
-   asserta(file(FILE, H)),
+%  write('set directory: '), write(DIR), nl,
+   asserta(file(FULLPATH, NAME, DIR)),
    repeat,
    line_count(H, LINE),
    read(H,X),
@@ -162,26 +169,34 @@ xinput(FIL) :-
    (bad_term(H, X) ->
       true
       ;
-      process(FILE, LINE, LINE2, X) ),
+      process(FULLPATH, LINE, LINE2, X) ),
    X == end_of_file,
    !,
    close(H),
    current_directory(_, DSTART),
+   set_open_module(MSTART),
+   set_current_file(_, OLDFILE),
   write('done with file: '), write(FILE), nl.
 xinput(_).
 
-path_dir(FILE, DIR) :-
+set_current_file(OLD, NEW) :-
+   retract(current_file(OLD)),
+   assert(current_file(NEW)).
+
+path_dir(FILE, FULLPATH, NAME, DIR) :-
    absolute_file_name(FILE, FULLPATH),
    atom_chars(FULLPATH, FULLCODES),
    reverse(FULLCODES, BACKWARDSCODES),
-   extract_dir(BACKWARDSCODES, BACKWARDSDIR),
+   extract_dir(BACKWARDSCODES, BACKWARDSNAME, BACKWARDSDIR),
    reverse(BACKWARDSDIR, DIRCODES),
    atom_chars(DIR, DIRCODES),
+   reverse(BACKWARDSNAME, NAMECODES),
+   atom_chars(NAME, NAMECODES),
    !.
 
-extract_dir(['/'|Dir], ['/'|Dir]) :- !.
-extract_dir([X|Xs], Dir) :-
-   !, extract_dir(Xs, Dir).
+extract_dir(['/'|Dir], [], ['/'|Dir]) :- !.
+extract_dir([X|Xs], [X|Ys], Dir) :-
+   !, extract_dir(Xs, Ys, Dir).
 
 add_extension(FIL, FILE) :-
    atom_chars(FIL, FILCODES),
@@ -196,16 +211,29 @@ add_ext([A,B,'.'|Xs], [A,B,'.'|Xs]).
 add_ext(Xs, [o,r,p,'.'|Xs]).
 
 process(FILE, LINE, LINE2,  end_of_file ) :- !.
+process(FILE, LINE, LINE2,  '--->'(H, B) ) :-
+   !,
+   functor(H, F, A),
+   open_module(M),
+   (pred_loc(M:F/A, _, _, _) -> 
+      true 
+   ;
+      assertz(pred_loc(M:F/A, FILE, LINE, LINE2))
+   ),
+   get_uses(M:F/A, B),
+   set_last_clause(M:F/A).
+
 process(FILE, LINE, LINE2,  (A --> B) ) :-
    expand_term( (A-->B), AB ),
    !,
    process(FILE, LINE, LINE2, AB).
 process(FILE, LINE, LINE2,  (:- module(M)) ) :-
-   !, set_open_module(M).
+   !, set_open_module(M),
+   assert(module_file(M, FILE)).
 process(FILE, LINE, LINE2,  (:- module(M, IM)) ) :-
    !,
    set_open_module(M),
-   assert(module_file(FILE, M)),
+   assert(module_file(M, FILE)),
    add_export(M, IM).
 %process(FILE, LINE, LINE2,  (:- body(M)) ) :-
 %   !, set_open_module(M).
@@ -222,9 +250,8 @@ process(FILE, LINE, LINE2,  (:- use_module(MF)) ) :-
    !,
    open_module(M),
    xinput(MF),
-   module_file(MF, IM),
-   add_import(M, IM),
-   set_open_module(M).
+   module_file(IM, MF),
+   add_import(M, IM).
 process(FILE, LINE, LINE2,  (:- import(IM)) ) :-
    !,
    open_module(M),
@@ -237,6 +264,8 @@ process(FILE, LINE, LINE2,  (:- dynamic(D)) ) :-
    !,
    open_module(M),
    add_dynamic(M, D).
+process(FILE, LINE, LINE2,  (:- volatile(_)) ) :-
+   !.
 process(FILE, LINE, LINE2,  (:- discontiguous(D)) ) :-
    !,
    open_module(M),
@@ -250,7 +279,7 @@ process(FILE, LINE, LINE2,  (:- op(P, A, O)) ) :-
    call(op(P, A, O)).
 process(FILE, LINE, LINE2,  (:- include(F)) ) :-
    !,
-   (file(F, _) -> true
+   (file(F, _, _) -> true
    ; xinput(F) ).
 process(FILE, LINE, LINE2, (:- meta_predicate(_)) ) :-
    !.
@@ -343,7 +372,7 @@ add_export(M, F/A) :-
    !,
    asserta(export_pred(M, F/A)).
 
-add_dynamic(_, []) :- !.
+add_dynamic(_, [], _, _, _) :- !.
 add_dynamic(M, [P|Z]) :-
    add_dynamic(M, P),
    !, add_dynamic(M, Z).
@@ -367,6 +396,15 @@ assert_dynamic(M:F/A) :-
    !.
 assert_dynamic(M:F/A) :-
    asserta(dynamic_pred(M:F/A)).
+
+locate_dynamics :-
+   dynamic_pred(M:F/A),
+   (module_file(M, FILE) ->
+       assert(pred_loc(M:F/A, FILE, 0, 0))
+       ;
+       assert(pred_loc(M:F/A, unknown, 0, 0)) ),
+   fail.
+locate_dynamics.
 
 add_discontiguous(_, []) :- !.
 add_discontiguous(M, [P|Z]) :-
@@ -466,7 +504,7 @@ add_use(retract(G), L, L3) :-
    mod_functor(G, MG, FG, AG),
    (MG == de_fault -> open_module(MMG); MMG = MG),
    add_dynamic(MMG, G),
-   insert(retract-MG:FG/AG, L, L3).
+   insert(retract-MMG:FG/AG, L, L3).
 add_use( IG, L, L ) :-
    memberchk(IG, [!, true, fail]),
    !.
