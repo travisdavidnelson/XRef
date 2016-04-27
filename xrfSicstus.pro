@@ -141,16 +141,14 @@ xinit :-
 
 xinput([]) :- !.
 xinput([FILE|FILES]) :-
-   file(FILE,_),
-   !,
-   xinput(FILES).
-xinput([FILE|FILES]) :-
    xinput(FILE),
    !,
    xinput(FILES).
 
-xinput(FILE) :-
-  write('reading file: '), write(FILE), nl,
+xinput(FIL) :-
+   add_extension(FIL, FILE),
+   \+ file(FILE,_),
+  write('reading file: '), write(FIL), nl,
    open(FILE, read, H),
    path_dir(FILE, DIR),
    current_directory(DSTART, DIR),
@@ -160,7 +158,7 @@ xinput(FILE) :-
    line_count(H, LINE),
    read(H,X),
    line_count(H, LINE2),
-  write(X),nl,
+%  write(X),nl,
    (bad_term(H, X) ->
       true
       ;
@@ -170,6 +168,7 @@ xinput(FILE) :-
    close(H),
    current_directory(_, DSTART),
   write('done with file: '), write(FILE), nl.
+xinput(_).
 
 path_dir(FILE, DIR) :-
    absolute_file_name(FILE, FULLPATH),
@@ -177,11 +176,24 @@ path_dir(FILE, DIR) :-
    reverse(FULLCODES, BACKWARDSCODES),
    extract_dir(BACKWARDSCODES, BACKWARDSDIR),
    reverse(BACKWARDSDIR, DIRCODES),
-   atom_chars(DIR, DIRCODES).
+   atom_chars(DIR, DIRCODES),
+   !.
 
 extract_dir(['/'|Dir], ['/'|Dir]) :- !.
 extract_dir([X|Xs], Dir) :-
    !, extract_dir(Xs, Dir).
+
+add_extension(FIL, FILE) :-
+   atom_chars(FIL, FILCODES),
+   reverse(FILCODES, RFILCODES),
+   add_ext(RFILCODES, RFILECODES),
+   reverse(RFILECODES, FILECODES),
+   atom_chars(FILE, FILECODES),
+   !.
+
+add_ext([A,B,C,'.'|Xs], [A,B,C,'.'|Xs]).
+add_ext([A,B,'.'|Xs], [A,B,'.'|Xs]).
+add_ext(Xs, [o,r,p,'.'|Xs]).
 
 process(FILE, LINE, LINE2,  end_of_file ) :- !.
 process(FILE, LINE, LINE2,  (A --> B) ) :-
@@ -244,7 +256,7 @@ process(FILE, LINE, LINE2, (:- meta_predicate(_)) ) :-
    !.
 process(FILE, LINE, LINE2,  (H :- B) ) :-
    !,
-?   functor(H, F, A),
+   functor(H, F, A),
    open_module(M),
    (pred_loc(M:F/A, _, _, _) -> 
       true 
@@ -409,9 +421,9 @@ set_last_clause(MFA) :-
    !,
    assert(last_clause(MFA)).
 
-add_use(X, L, L) :-
-  write(add_use(X)), nl,
-  fail.
+%add_use(X, L, L) :-
+%  write(add_use(X)), nl,
+%  fail.
 add_use(X, L, L) :-
    var(X), !.
 add_use( (G,Gs), L, L3 ) :-
@@ -421,16 +433,17 @@ add_use( (G;Gs), L, L3 ) :-
    add_use(G, L, L2),
    !, add_use(Gs, L2, L3).
 add_use( (G->Gs), L, L3 ) :-
-   add_use(G, L, L2),
+   (ok_goal(G) -> add_use(G, L, L2); L = L2),
    !,
    add_use(Gs, L2, L3).
 add_use( not(G), L, L2 ) :-
+   ok_goal(G),
    !, add_use(G, L, L2).
 add_use( call(G), L, L2 ) :-
-   nonvar(G),
-   G \= _:_,
+   ok_goal(G),
    !, add_use(G, L, L2).
 add_use( once(G), L, L2 ) :-
+   ok_goal(G),
    !, add_use(G, L, L2).
 add_use( catch(G,_,R), L, L3) :-
    add_use(G, L, L2),
@@ -441,35 +454,38 @@ add_use( MAPLIST, L, L2) :-
    !, add_use(G, L, L2).
 add_use( ASSERT, L, L3 ) :-
    is_assert(ASSERT, G),
+   ok_goal(G),
    !,
-   (nonvar(G) ->
-      mod_functor(G, MG, FG, AG),
-      (MG == de_fault -> open_module(MMG); MMG = MG),
-      add_dynamic(MMG, G),
-      insert(assert-MMG:FG/AG, L, L3)
-      ;
-      mod_functor(ASSERT, M, F, A),
-      insert(M:F/A, L, L3)
-   ),
-   !.
+   mod_functor(G, MG, FG, AG),
+   (MG == de_fault -> open_module(MMG); MMG = MG),
+   add_dynamic(MMG, G),
+   insert(assert-MMG:FG/AG, L, L3).
 add_use(retract(G), L, L3) :-
-   (nonvar(G) ->
-      mod_functor(G, MG, FG, AG),
-      (MG == de_fault -> open_module(MMG); MMG = MG),
-      add_dynamic(MMG, G),
-      insert(retract-MG:FG/AG, L, L3)
-      ;
-      mod_functor(retract(G), M, F, A),
-      insert(M:F/A, L, L3)
-   ),
-   !.
+   ok_goal(G),
+   !,
+   mod_functor(G, MG, FG, AG),
+   (MG == de_fault -> open_module(MMG); MMG = MG),
+   add_dynamic(MMG, G),
+   insert(retract-MG:FG/AG, L, L3).
 add_use( IG, L, L ) :-
    memberchk(IG, [!, true, fail]),
    !.
 add_use( !, L, L ) :- !.
 add_use( G, L, L2 ) :-
+   ok_goal(G),
    mod_functor(G, M, F, A),
    insert(M:F/A, L, L2).
+
+ok_goal(G) :- var(G), !, fail.
+ok_goal(A:B) :- (var(A);var(B)), !, fail.
+ok_goal(G) :-
+   catch( functor(G, _, _), X, bad_goal(X,G) ).
+
+
+bad_goal(X,G) :-
+   write('*** Bad Goal: '), nl,
+   write(X), nl,
+   writeq(G), nl, abort.
    
 is_assert(assert(G), G).
 is_assert(asserta(G), G).

@@ -30,12 +30,14 @@ cross_reference(DIR, FILES, OUT) :-
    xrf:xref(FILES),
    tell(OUT),
    xreport,
-   set_tab('.  '),
+   set_tab('>  '),
    tops(TOPS),
    tops_down(TOPS),
+   set_tab('<  '),
    bottoms(BOTTOMS),
    bottoms_up(BOTTOMS),
-   told.
+   told,
+   true.
 
 xreport :-
    warning_report,
@@ -51,6 +53,8 @@ uses_report([]).
 uses_report([M:F/A|Z]) :-
       write(M:F/A),
       (xrf:dynamic_pred(M:F/A) -> write('   '), write(dynamic); true),
+      (xrf:pred_loc(M:F/A, FILE, LINE, LINE2) ->
+           write('    '), write(FILE:LINE:LINE2); true),
       nl,
       modified_report(M:F/A),
       subgoal_report(M:F/A),
