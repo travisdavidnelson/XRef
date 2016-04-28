@@ -105,7 +105,8 @@
    discontig_pred/1,
    last_clause/1,
    file/3,
-   pred_loc/4.
+   pred_loc/4,
+   error/3.
 
 
 xref(FILES) :-
@@ -132,6 +133,7 @@ xinit :-
    retractall(last_clause(_)),
    retractall(file(_,_,_)),
    retractall(pred_loc(_,_,_,_)),
+   retractall(error(_,_,_)),
    assert(open_module(user)),
    assert(file(unknown, unknown, unknown)),
    assert(current_file(top)).
@@ -163,7 +165,7 @@ xinput(FIL) :-
    asserta(file(FULLPATH, NAME, DIR)),
    repeat,
    line_count(H, LINE),
-   read(H,X),
+   catch( read(H,X), ERR, ( assert(error(FULLPATH, LINE, ERR)), fail ) ),
    line_count(H, LINE2),
 %  write(X),nl,
    (bad_term(H, X) ->
@@ -246,6 +248,8 @@ process(FILE, LINE, LINE2, (:- use_module(library(IM))) ) :-
    !,
    open_module(M),
    add_import(M, library(IM)).
+process(FILE, LINE, LINE2, (:- use_module(project(P))) ) :-
+   !.
 process(FILE, LINE, LINE2,  (:- use_module(MF)) ) :-
    !,
    open_module(M),
@@ -446,11 +450,12 @@ discontig_check(MFA) :-
 discontig_check(MFA) :-
    last_clause(MFA),
    !.
-discontig_check(MFA) :-
-   uses_temp(MFA,_),
+discontig_check(M:F/A) :-
+   uses_temp(M:F/A,_),
    !,
+   module_file(M, FILE),
    asserta(warning(error, 
-      ['Discontiguous definition of: ', MFA]
+      ['Discontiguous definition of: ', M:F/A, ' in ', FILE ]
       )).
 discontig_check(_).
 
@@ -488,7 +493,12 @@ add_use( catch(G,_,R), L, L3) :-
    add_use(R, L2, L3),
    !.
 add_use( MAPLIST, L, L2) :-
-   MAPLIST =.. [maplist, G | _],
+   MAPLIST =.. [maplist, GG | ARGS],
+   nonvar(GG),
+   length(ARGS, NARGS),
+   functor(GG, F, A),
+   A2 is A + NARGS,
+   functor(G, F, A2),
    !, add_use(G, L, L2).
 add_use( ASSERT, L, L3 ) :-
    is_assert(ASSERT, G),
@@ -498,7 +508,8 @@ add_use( ASSERT, L, L3 ) :-
    (MG == de_fault -> open_module(MMG); MMG = MG),
    add_dynamic(MMG, G),
    insert(assert-MMG:FG/AG, L, L3).
-add_use(retract(G), L, L3) :-
+add_use(RETRACT, L, L3) :-
+   is_retract(RETRACT, G),
    ok_goal(G),
    !,
    mod_functor(G, MG, FG, AG),
@@ -529,6 +540,9 @@ is_assert(assert(G), G).
 is_assert(asserta(G), G).
 is_assert(assertz(G), G).
 
+is_retract(retract(G), G).
+is_retract(reatractall(G), G).
+
 %------------------------------------
 % Resolve modules for used goals
 %
@@ -544,8 +558,9 @@ resolve_uses.
 resolve_dynamics :-
    dynamic_pred(M:F/A),
    (uses_temp(M:F/A, _) ->
+      module_file(M, FILE),
       assert(warning(warning,
-         ['Dynamic and static definitions for: ', M:F/A]))
+         ['Dynamic and static definitions for: ', M:F/A, ' in ', FILE]))
       ;
       asserta(uses_temp(M:F/A, [])) ),
    fail.
@@ -666,8 +681,9 @@ convert_mfa_list([M:F/A | T], [loc(M:F/A, FILE, LINE, LINE2) | T2]) :-
 %
 
 warn_unused :-
-   used_by(MFA, []),
-   asserta(warning(info, ['Unused predicate: ', MFA])),
+   used_by(M:F/A, []),
+   module_file(M, FILE),
+   asserta(warning(info, ['Unused predicate: ', M:F/A, ' in ', FILE])),
    fail.
 warn_unused.
 
@@ -679,8 +695,9 @@ warn_undefined.
 
 warn_undef([],_) :- !.
 warn_undef([undefined:F1/A1|Z], M:F/A) :-
+      module_file(M, FILE),
       asserta(warning(warning, 
-         ['Undefined: ', F1/A1, ' in module ', M, ' called from ', F/A]
+         ['Undefined: ', F1/A1, ' in module ', M, ' called from ', F/A, ' in ', FILE]
          )),
       !,
       warn_undef(Z, M:F/A).
