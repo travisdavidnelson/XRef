@@ -28,6 +28,7 @@ cross_reference(DIR, FILES, OUT) :-
    current_directory(_, DIR),
    xrf:xref(FILES),
    tell(OUT),
+   error_report,
    set_tab('>  '),
    filereport,
    set_tab('   '),
@@ -41,6 +42,13 @@ cross_reference(DIR, FILES, OUT) :-
    bottoms_up(BOTTOMS),
    told,
    true.
+
+error_report :-
+   xrf:error(FILE, LINE, ERROR),
+   write('*** ERROR ***  '),  write(FILE:LINE), nl,
+   write(ERROR), nl, nl,
+   fail.
+error_report. 
 
 filereport :-
    write('--------- Files that load other files ----------'), nl,

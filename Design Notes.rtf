@@ -1,10 +1,26 @@
 {\rtf1\ansi\ansicpg1252\cocoartf1348\cocoasubrtf170
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Monaco;}
 {\colortbl;\red255\green255\blue255;}
-\margl1440\margr1440\vieww12160\viewh10400\viewkind0
+\margl1440\margr1440\vieww14980\viewh16700\viewkind0
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
 
 \f0\fs24 \cf0 Design Notes & Status\
+\
+2016-04-27\
+\
+Working with current sources.  Here\'92s the development cycle.  Run it, if it fails, fix it.  So I imagine we\'92ll keep running into various problems, and each one will make the tool better.  Here\'92s the ones I encountered with these tests.\
+\
+It was failing to handle :- use_module(project(X)) statements.  I added a poor fix, which was in process to recognize those statements and do nothing.  A better fix is to figure out the path to X and \'91xinput\'92 that file so it can be included in the cross reference.\
+\
+It was getting read errors, that were due to an operator, <->, not being understood.  The fix was to put a catch around the \'91read\'92 in the xinput loop and log the errors and display them at the top of the cross reference.  These could be made easier to understand.\
+\
+I random check of the results.  Lots of undefined and unused.  Looked at semantics atomize which was said to be unused.  Checked and it was used, but in a maplist so it was two arguments shy.  Added the code to \'91uses\'92 predicate that looks at such things, and added the extra arguments, so now it\'92s happy with atomize.\
+\
+There are lots more.  The more the reasons are understood and dealt with, the smarter the xref will become.\
+\
+Check the change log to see the ones made in this round.  The main predicates that do the work are \'91process\'92, taking the first pass, and \'91uses\'92 which is looking at the individual goals and recording what needs to be recorded.\
+\
+Starting at the top of the warnings, the discontiguous warning for logicTranslator/processNode is there because it is discontiguous.  Probably an error in the code.\
 \
 2016-04-27\
 \
