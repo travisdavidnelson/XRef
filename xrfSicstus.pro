@@ -145,24 +145,28 @@ xinit :-
 xinput([]) :- !.
 xinput([FILE|FILES]) :-
    set_current_file(_, top),
-   xinput(FILE),
+   xinput(FILE, _),
    !,
    xinput(FILES).
 
-xinput(FIL) :-
-   open_module(MSTART),
+xinput(FIL, FULLPATH) :-
    add_extension(FIL, FILE),
    path_dir(FILE, FULLPATH, NAME, DIR),
    current_file(CF),
    assert(file_loads(CF, FULLPATH)),
-   \+ file(FULLPATH, _, _),
+   xread(FULLPATH, NAME, DIR).
+
+xread(FULLPATH, NAME, DIR) :-
+   file(FULLPATH, NAME, DIR),
+   !.
+xread(FULLPATH, NAME, DIR) :-
+   open_module(MSTART),
    set_current_file(OLDFILE, FULLPATH),
-  write('reading file: '), write(FIL),
-  write('  '), write(NAME), write('  '), write(DIR), nl,
+  write('reading file: '), write('NAME'), write('   '), write(DIR),
    open(FULLPATH, read, H),
    current_directory(DSTART, DIR),
-%  write('set directory: '), write(DIR), nl,
    asserta(file(FULLPATH, NAME, DIR)),
+   
    repeat,
    line_count(H, LINE),
    catch( read(H,X), ERR, ( assert(error(FULLPATH, LINE, ERR)), fail ) ),
@@ -175,16 +179,17 @@ xinput(FIL) :-
    X == end_of_file,
    !,
    close(H),
+   
    current_directory(_, DSTART),
    set_open_module(MSTART),
    set_current_file(_, OLDFILE),
   write('done with file: '), write(FILE), nl.
-xinput(_).
+   
 
 set_current_file(OLD, NEW) :-
    retract(current_file(OLD)),
    assert(current_file(NEW)).
-
+        
 path_dir(FILE, FULLPATH, NAME, DIR) :-
    absolute_file_name(FILE, FULLPATH),
    atom_chars(FULLPATH, FULLCODES),
@@ -253,8 +258,8 @@ process(FILE, LINE, LINE2, (:- use_module(project(P))) ) :-
 process(FILE, LINE, LINE2,  (:- use_module(MF)) ) :-
    !,
    open_module(M),
-   xinput(MF),
-   module_file(IM, MF),
+   xinput(MF, FULLPATH),
+   module_file(IM, FULLPATH),
    add_import(M, IM).
 process(FILE, LINE, LINE2,  (:- import(IM)) ) :-
    !,
@@ -283,8 +288,7 @@ process(FILE, LINE, LINE2,  (:- op(P, A, O)) ) :-
    call(op(P, A, O)).
 process(FILE, LINE, LINE2,  (:- include(F)) ) :-
    !,
-   (file(F, _, _) -> true
-   ; xinput(F) ).
+   xinput(F, _).
 process(FILE, LINE, LINE2, (:- meta_predicate(_)) ) :-
    !.
 process(FILE, LINE, LINE2,  (H :- B) ) :-

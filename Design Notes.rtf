@@ -6,6 +6,12 @@
 
 \f0\fs24 \cf0 Design Notes & Status\
 \
+2016-04-29\
+\
+The log/2 bug was nastier than thought.  It had to do with using different forms of the file name when loading modules, so the log module wasn\'92t noted.  Working OK now.\
+\
+Diagnostic tool \'97 make direct calls to the various dynamic predicates, such as mod_import and the like.  These revealed that the higher level modules weren\'92t seeing the log module after it had been read once.\
+\
 2016-04-27\
 \
 Working with current sources.  Here\'92s the development cycle.  Run it, if it fails, fix it.  So I imagine we\'92ll keep running into various problems, and each one will make the tool better.  Here\'92s the ones I encountered with these tests.\
